@@ -8,10 +8,29 @@ spring:
   codec:
     max-in-memory-size: 10MB
 
+  flyway:
+    url: "jdbc:postgresql://${database.endpoint:localhost:5432}/${database.name:postgres}"
+    user: "${database.username:root}"
+    password: "${database.password:dev}"
   jackson:
     date-format: "yyyy-MM-dd HH:mm:ss"
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+
+  r2dbc:
+    url: "r2dbc:postgresql://${database.endpoint:localhost:5432}/${database.name:postgres}"
+    username: "${database.username:root}"
+    password: "${database.password:dev}"
+    pool:
+      max-life-time: -1
+    properties:
+      ssl: true
+      sslRootCert: /home/appuser/.postgresql/root.crt
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${oauth.endpoint.url}/.well-known/jwks.json
 
   profiles:
     group:
@@ -49,3 +68,8 @@ management:
     info:
       cache:
         time-to-live: 2000ms
+
+azure:
+  application-insights:
+    web:
+      enabled: false
