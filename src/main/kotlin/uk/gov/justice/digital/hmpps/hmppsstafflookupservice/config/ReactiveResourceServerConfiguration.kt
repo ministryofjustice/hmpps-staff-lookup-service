@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.web.server.SecurityWebFilterChain
-import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.config.ReactiveAuthAwareTokenConverter
 
 @Configuration
 @EnableWebFluxSecurity
