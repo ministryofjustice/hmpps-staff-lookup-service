@@ -1,17 +1,15 @@
 version: "3"
 services:
-  hmpps-staff-lookup-service:
-    build:
-      context: .
-    network_mode: "host"
-    container_name: hmpps-staff-lookup-service
+  postgres:
+    image: postgres:14
+    networks:
+      - hmpps
+    container_name: hmpps-staff-lookup-postgres
+    restart: always
     ports:
-      - "8081:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
+      - '5432:5432'
     environment:
-      - SERVER_PORT=8080
-      - SPRING_PROFILES_ACTIVE=dev
-
+      - POSTGRES_PASSWORD=dev
+      - POSTGRES_USER=root
 networks:
   hmpps:

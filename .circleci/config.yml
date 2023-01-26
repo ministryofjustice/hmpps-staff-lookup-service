@@ -1,21 +1,22 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@6
+  hmpps: ministryofjustice/hmpps@7.1.0
 
 parameters:
   alerts-slack-channel:
     type: string
-    default: dps_alerts_security
+    default: manage_a_workforce_dev
   releases-slack-channel:
     type: string
-    default: dps-releases
+    default: manage_a_workforce_dev
 
 jobs:
   validate:
     executor:
-      name: hmpps/java
-      tag: "19.0"
+      name: hmpps/java_postgres
+      jdk_tag: "19.0"
+      postgres_tag: "14"
     steps:
       - checkout
       - restore_cache:
@@ -63,10 +64,6 @@ workflows:
             - build_docker
             - helm_lint
           helm_timeout: 5m
-#      - request-preprod-approval:
-#          type: approval
-#          requires:
-#            - deploy_dev
 #      - hmpps/deploy_env:
 #          name: deploy_preprod
 #          env: "preprod"
@@ -76,12 +73,14 @@ workflows:
 #            - hmpps-common-vars
 #            - hmpps-staff-lookup-service-preprod
 #          requires:
-#            - request-preprod-approval
-#          helm_timeout: 5m
+#            - validate
+#            - build_docker
+#            - helm_lint
 #      - request-prod-approval:
 #          type: approval
 #          requires:
 #            - deploy_preprod
+#            - deploy_dev
 #      - hmpps/deploy_env:
 #          name: deploy_prod
 #          env: "prod"

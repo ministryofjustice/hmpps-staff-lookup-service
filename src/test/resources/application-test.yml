@@ -4,3 +4,13 @@ server:
 management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0
+
+oauth:
+  endpoint:
+    url: http://localhost:8090/auth
+
+spring:
+  r2dbc:
+    properties:
+      sslMode: DISABLE
+      sslRootCert:
