@@ -12,6 +12,7 @@ spring:
     url: "jdbc:postgresql://${database.endpoint:localhost:5432}/${database.name:postgres}"
     user: "${database.username:root}"
     password: "${database.password:dev}"
+    mixed: true
   jackson:
     date-format: "yyyy-MM-dd HH:mm:ss"
     serialization:
