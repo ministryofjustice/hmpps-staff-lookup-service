@@ -32,6 +32,17 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: ${oauth.endpoint.url}/.well-known/jwks.json
+      client:
+        registration:
+          microsoft-graph-api:
+            provider: microsoft-ad-auth
+            client-id: ${oauth.client.id}
+            client-secret: ${oauth.client.secret}
+            scope: https://graph.microsoft.com/.default
+            authorization-grant-type: client_credentials
+        provider:
+          microsoft-ad-auth:
+            token-uri: ${oauth.endpoint.url}/${oauth.tenant.id}/oauth2/v2.0/token
 
   profiles:
     group:
