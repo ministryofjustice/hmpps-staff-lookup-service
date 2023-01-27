@@ -10,7 +10,7 @@ class IndexingService(
   suspend fun indexAll(): String {
     val exampleData = microsoftGraphClient.getUsersWithoutPagination()
     exampleData.collect {
-      println("DATA: ${it}")
+      println("DATA: $it")
     }
     return "DONE"
   }

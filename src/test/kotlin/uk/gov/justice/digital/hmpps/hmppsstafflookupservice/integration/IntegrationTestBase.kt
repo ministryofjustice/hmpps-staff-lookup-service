@@ -73,15 +73,18 @@ abstract class IntegrationTestBase {
     microsoftOauthMock.verify(
       request()
         .withPath("/auth/$tenantFromConfig/oauth2/v2.0/token")
-        .withHeader("Authorization", "Basic ${encodedClientIdAndSecretFromConfig}")
-        .withBody(json(
-          """
+        .withHeader("Authorization", "Basic $encodedClientIdAndSecretFromConfig")
+        .withBody(
+          json(
+            """
             {
               scope: 'https://graph.microsoft.com/.default',
               grant_type: 'client_credentials'
             }
-          """.trimIndent(),
-          MatchType.STRICT)),
+            """.trimIndent(),
+            MatchType.STRICT
+          )
+        ),
       VerificationTimes.atLeast(1)
     )
   }
