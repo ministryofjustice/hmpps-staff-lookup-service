@@ -27,7 +27,6 @@ class JwtAuthHelper {
   @Bean
   fun jwtDecoder(): ReactiveJwtDecoder = NimbusReactiveJwtDecoder.withPublicKey(keyPair.public as RSAPublicKey).build()
 
-  // TODO - Remove?
   fun setAuthorisation(
     user: String = "AUTH_ADM",
     roles: List<String> = listOf(),
