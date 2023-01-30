@@ -5,12 +5,16 @@ import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.client.MicrosoftGrap
 
 @Service
 class IndexingService(
-  val microsoftGraphClient: MicrosoftGraphClient
+  val microsoftGraphClient: MicrosoftGraphClient,
+  val databaseWriteService: DatabaseWriteService
 ) {
   suspend fun indexAll(): String {
-    val exampleData = microsoftGraphClient.getUsersWithoutPagination()
-    exampleData.collect {
-      println("DATA: $it")
+    var exampleData = microsoftGraphClient.getUsersPage(null)
+    databaseWriteService.writeData(exampleData.value)
+    while (exampleData.nextLink != null) {
+      val skipToken = exampleData.nextLink!!.substringAfter("skiptoken=")
+      exampleData = microsoftGraphClient.getUsersPage(skipToken)
+      databaseWriteService.writeData(exampleData.value)
     }
     return "DONE"
   }
