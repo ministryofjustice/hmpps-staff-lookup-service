@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance
 import org.mockserver.integration.ClientAndServer
 import org.mockserver.integration.ClientAndServer.startClientAndServer
 import org.mockserver.matchers.MatchType
+import org.mockserver.matchers.TimeToLive
 import org.mockserver.matchers.Times
 import org.mockserver.model.HttpRequest.request
 import org.mockserver.model.HttpResponse.response
@@ -90,8 +91,15 @@ abstract class IntegrationTestBase {
     val secondResponse = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(null, secondResponseUsers)))
 
-    microsoftGraphMock.`when`(request().withPath("/v1.0/users/"), Times.exactly(1)).respond(firstResponse)
-    microsoftGraphMock.`when`(request().withPath("/v1.0/users/").withQueryStringParameter("\$skiptoken", skipTokenToSecondPage)).respond(secondResponse)
+    microsoftGraphMock.`when`(
+      request().withPath("/v1.0/users/"),
+      Times.once(),
+      TimeToLive.unlimited(),
+      10
+    ).respond(firstResponse)
+    microsoftGraphMock.`when`(
+      request().withPath("/v1.0/users/").withQueryStringParameter("\$skiptoken", skipTokenToSecondPage)
+    ).respond(secondResponse)
   }
 
   fun verifyMicrosoftOauthMockCall(tenantId: String) {
