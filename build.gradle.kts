@@ -26,7 +26,7 @@ dependencies {
   implementation("io.opentelemetry:opentelemetry-api:1.22.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
-  runtimeOnly("org.flywaydb:flyway-core")
+  implementation("org.flywaydb:flyway-core")
   runtimeOnly("org.postgresql:r2dbc-postgresql:0.9.3.RELEASE")
   runtimeOnly("org.postgresql:postgresql:42.5.1")
 
