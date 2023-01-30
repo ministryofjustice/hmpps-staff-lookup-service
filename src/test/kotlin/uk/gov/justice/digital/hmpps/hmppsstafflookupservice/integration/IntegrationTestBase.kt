@@ -8,6 +8,8 @@ import org.junit.jupiter.api.TestInstance
 import org.mockserver.integration.ClientAndServer
 import org.mockserver.integration.ClientAndServer.startClientAndServer
 import org.mockserver.matchers.MatchType
+import org.mockserver.matchers.TimeToLive
+import org.mockserver.matchers.Times
 import org.mockserver.model.HttpRequest.request
 import org.mockserver.model.HttpResponse.response
 import org.mockserver.model.JsonBody.json
@@ -19,6 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDO
 import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
+import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.client.MicrosoftADUser
+import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.client.UserResponse
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.StaffRepository
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.StaffTempRepository
 
@@ -56,7 +60,6 @@ abstract class IntegrationTestBase {
     setupMicrosoftOauth()
   }
 
-  // TODO - Using afterAll needs TestInstance annotation - maybe afterEach?
   @AfterAll
   fun tearDownServer() {
     microsoftOauthMock.stop()
@@ -76,10 +79,42 @@ abstract class IntegrationTestBase {
     scopes: List<String> = listOf()
   ): (HttpHeaders) -> Unit = jwtAuthHelper.setAuthorisation(user, roles, scopes)
 
-  fun standardGraphResponse() {
+  fun singlePageGraphResponse() {
+    val usersResponse = listOf(
+      MicrosoftADUser("Abc", "Def", "SPO", "a.user@somehwere.com", "a.user@somehwere.com"),
+      MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE")
+    )
     val response = response().withContentType(APPLICATION_JSON)
-      .withBody(objectMapper.writeValueAsString(mapOf("employeeId" to "ABCDE")))
+      .withBody(objectMapper.writeValueAsString(UserResponse(null, usersResponse)))
+
     microsoftGraphMock.`when`(request().withPath("/v1.0/users/")).respond(response)
+  }
+
+  fun multiplePageGraphResponse() {
+    val skipTokenToSecondPage = "ASKIPTOKEN"
+    val firstResponseNextLink = "https://graph.microsoft.com/v1.0/users/?\$select=givenName%2csurname%2cjobTitle%2cmail%2cuserPrincipalName&\$top=5&\$skiptoken=$skipTokenToSecondPage"
+    val firstResponseUsers = listOf(
+      MicrosoftADUser("Abc", "Def", "SPO", "a.user@somehwere.com", "a.user@somehwere.com"),
+      MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE")
+    )
+    val firstResponse = response().withContentType(APPLICATION_JSON)
+      .withBody(objectMapper.writeValueAsString(UserResponse(firstResponseNextLink, firstResponseUsers)))
+
+    val secondResponseUsers = listOf(
+      MicrosoftADUser("Mno", "Pqr", null, null, "XYZ")
+    )
+    val secondResponse = response().withContentType(APPLICATION_JSON)
+      .withBody(objectMapper.writeValueAsString(UserResponse(null, secondResponseUsers)))
+
+    microsoftGraphMock.`when`(
+      request().withPath("/v1.0/users/"),
+      Times.once(),
+      TimeToLive.unlimited(),
+      10
+    ).respond(firstResponse)
+    microsoftGraphMock.`when`(
+      request().withPath("/v1.0/users/").withQueryStringParameter("\$skiptoken", skipTokenToSecondPage)
+    ).respond(secondResponse)
   }
 
   fun verifyMicrosoftOauthMockCall(tenantId: String) {
