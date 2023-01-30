@@ -9,12 +9,12 @@ class IndexingService(
   val databaseWriteService: DatabaseWriteService
 ) {
   suspend fun indexAll(): String {
-    var exampleData = microsoftGraphClient.getUsersPage(null)
-    databaseWriteService.writeData(exampleData.value)
-    while (exampleData.nextLink != null) {
-      val skipToken = exampleData.nextLink!!.substringAfter("skiptoken=")
-      exampleData = microsoftGraphClient.getUsersPage(skipToken)
-      databaseWriteService.writeData(exampleData.value)
+    var graphResponse = microsoftGraphClient.getUsersPage(null)
+    databaseWriteService.writeData(graphResponse.value)
+    while (graphResponse.nextLink != null) {
+      val skipToken = graphResponse.nextLink!!.substringAfter("skiptoken=")
+      graphResponse = microsoftGraphClient.getUsersPage(skipToken)
+      databaseWriteService.writeData(graphResponse.value)
     }
     return "DONE"
   }
