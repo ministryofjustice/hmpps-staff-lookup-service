@@ -19,8 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDO
 import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
-import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.entities.Staff
-import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.entities.StaffTemp
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.StaffRepository
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.StaffTempRepository
 
@@ -49,9 +47,6 @@ abstract class IntegrationTestBase {
 
   @BeforeEach
   fun removeAllData() = runBlocking {
-    staffRepository.save(Staff(firstName = "processed", lastName = "staff", email = "processed@staff.com"))
-    staffTempRepository.save(StaffTemp(firstName = "temp", lastName = "staff", email = "temp@staff.com"))
-
     staffRepository.deleteAll()
     staffTempRepository.deleteAll()
   }
