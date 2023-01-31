@@ -79,8 +79,3 @@ management:
     info:
       cache:
         time-to-live: 2000ms
-
-azure:
-  application-insights:
-    web:
-      enabled: false
