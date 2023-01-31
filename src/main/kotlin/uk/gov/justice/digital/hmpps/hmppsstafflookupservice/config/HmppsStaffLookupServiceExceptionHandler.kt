@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.server.MissingRequestValueException
 import reactor.core.publisher.Mono
 
 @RestControllerAdvice
@@ -22,6 +23,22 @@ class HmppsStaffLookupServiceExceptionHandler {
           ErrorResponse(
             status = BAD_REQUEST,
             userMessage = "Validation failure: ${e.message}",
+            developerMessage = e.message
+          )
+        )
+    )
+  }
+
+  @ExceptionHandler(MissingRequestValueException::class)
+  fun handleMissingRequestValueException(e: Exception): Mono<ResponseEntity<ErrorResponse>> {
+    log.info("Missing Request Value exception: {}", e.message)
+    return Mono.just(
+      ResponseEntity
+        .status(BAD_REQUEST)
+        .body(
+          ErrorResponse(
+            status = BAD_REQUEST,
+            userMessage = "Missing Request Value failure: ${e.message}",
             developerMessage = e.message
           )
         )
