@@ -22,7 +22,7 @@ class IndexingController(
     ]
   )
   @PostMapping("/admin/refresh-staffs")
-  suspend fun fullReindex(): String {
-    return indexingService.indexAll()
+  fun fullReindex() {
+    indexingService.indexAll()
   }
 }
