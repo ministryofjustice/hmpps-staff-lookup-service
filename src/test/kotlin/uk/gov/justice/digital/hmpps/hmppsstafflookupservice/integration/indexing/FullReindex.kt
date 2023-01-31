@@ -36,4 +36,26 @@ class FullReindex : IntegrationTestBase() {
       .isOk
     verify(databaseWriteService, times(2)).writeData(any())
   }
+
+  @Test
+  fun `retries on error getting the graph data`() {
+    erroredGraphResponseWithSuccessOnRetry()
+    webTestClient.post()
+      .uri("/admin/refresh-staffs")
+      .headers(setAuthorisation(roles = listOf("ROLE_TEST")))
+      .exchange()
+      .expectStatus()
+      .isOk
+  }
+
+  @Test
+  fun `fails eventually when error getting the graph data`() {
+    erroredGraphResponse()
+    webTestClient.post()
+      .uri("/admin/refresh-staffs")
+      .headers(setAuthorisation(roles = listOf("ROLE_TEST")))
+      .exchange()
+      .expectStatus()
+      .is5xxServerError
+  }
 }

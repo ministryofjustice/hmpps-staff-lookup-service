@@ -58,6 +58,7 @@ abstract class IntegrationTestBase {
   @BeforeEach
   fun `setup microsoft oauth`() {
     setupMicrosoftOauth()
+    microsoftGraphMock.reset()
   }
 
   @AfterAll
@@ -95,7 +96,7 @@ abstract class IntegrationTestBase {
     val firstResponseNextLink = "https://graph.microsoft.com/v1.0/users/?\$select=givenName%2csurname%2cjobTitle%2cmail%2cuserPrincipalName&\$top=5&\$skiptoken=$skipTokenToSecondPage"
     val firstResponseUsers = listOf(
       MicrosoftADUser("Abc", "Def", "SPO", "a.user@somehwere.com", "a.user@somehwere.com"),
-      MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE")
+      MicrosoftADUser(null, null, null, null, "ABCDE")
     )
     val firstResponse = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(firstResponseNextLink, firstResponseUsers)))
@@ -115,6 +116,33 @@ abstract class IntegrationTestBase {
     microsoftGraphMock.`when`(
       request().withPath("/v1.0/users/").withQueryStringParameter("\$skiptoken", skipTokenToSecondPage)
     ).respond(secondResponse)
+  }
+
+  fun erroredGraphResponseWithSuccessOnRetry() {
+    val usersResponse = listOf(
+      MicrosoftADUser("Abc", "Def", "SPO", "a.user@somehwere.com", "a.user@somehwere.com"),
+    )
+    val errorResponse = response().withStatusCode(500)
+    val successfulResponse = response().withContentType(APPLICATION_JSON)
+      .withBody(objectMapper.writeValueAsString(UserResponse(null, usersResponse)))
+
+    microsoftGraphMock.`when`(
+      request().withPath("/v1.0/users/"),
+      Times.once(),
+      TimeToLive.unlimited(),
+      10
+    ).respond(errorResponse)
+    microsoftGraphMock.`when`(
+      request().withPath("/v1.0/users/")
+    ).respond(successfulResponse)
+  }
+
+  fun erroredGraphResponse() {
+    val errorResponse = response().withStatusCode(500)
+
+    microsoftGraphMock.`when`(
+      request().withPath("/v1.0/users/")
+    ).respond(errorResponse)
   }
 
   fun verifyMicrosoftOauthMockCall(tenantId: String) {
