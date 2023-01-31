@@ -30,7 +30,7 @@ class MicrosoftGraphClient(
       .get()
       .uri(
         "/v1.0/users/?\$select=givenName,surname,jobTitle,mail,userPrincipalName&\$top=5" +
-          ( skipToken?.let { "&\$skiptoken=$skipToken" } ?: "" )
+          (skipToken?.let { "&\$skiptoken=$skipToken" } ?: "")
       )
       .httpRequest {
         val reactorRequest: HttpClientRequest = it.getNativeRequest()
