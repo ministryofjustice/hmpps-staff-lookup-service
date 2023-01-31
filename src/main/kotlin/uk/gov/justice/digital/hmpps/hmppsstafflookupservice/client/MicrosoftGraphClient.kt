@@ -1,10 +1,12 @@
 package uk.gov.justice.digital.hmpps.hmppsstafflookupservice.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.awaitBody
+import reactor.netty.http.client.HttpClientRequest
+import java.time.Duration
 
 data class UserResponse(
   @JsonProperty("@odata.nextLink") val nextLink: String? = null,
@@ -12,10 +14,10 @@ data class UserResponse(
 )
 
 data class MicrosoftADUser(
-  val givenName: String,
-  val surname: String,
-  val jobTitle: String? = null,
-  val mail: String? = null,
+  val givenName: String?,
+  val surname: String?,
+  val jobTitle: String?,
+  val mail: String?,
   val userPrincipalName: String,
 )
 
@@ -28,9 +30,15 @@ class MicrosoftGraphClient(
       .get()
       .uri(
         "/v1.0/users/?\$select=givenName,surname,jobTitle,mail,userPrincipalName&\$top=5" +
-          skipToken?.let { "&\$skiptoken=$skipToken" }
+          ( skipToken?.let { "&\$skiptoken=$skipToken" } ?: "" )
       )
+      .httpRequest {
+        val reactorRequest: HttpClientRequest = it.getNativeRequest()
+        reactorRequest.responseTimeout(Duration.ofSeconds(10))
+      }
       .retrieve()
-      .awaitBody()
+      .bodyToMono(UserResponse::class.java)
+      .retry(3)
+      .awaitSingle()
   }
 }
