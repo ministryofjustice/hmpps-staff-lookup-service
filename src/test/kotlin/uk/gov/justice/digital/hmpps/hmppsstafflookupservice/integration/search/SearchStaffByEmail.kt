@@ -28,9 +28,8 @@ class SearchStaffByEmail : IntegrationTestBase() {
 
   @Test
   fun `must favour username over domain name`(): Unit = runBlocking {
-    for (i in 0..21) {
-      staffRepository.save(Staff(firstName = "a$i", lastName = "Smith", jobTitle = "Probation Practitioner", email = "a.smith$i@staff.com"))
-    }
+
+    staffRepository.save(Staff(firstName = "Andrew", lastName = "Smith", jobTitle = "Probation Practitioner", email = "andrew.smith@staff.com"))
 
     val usernameStartsWithDomain = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@staff.com"))
 
@@ -41,9 +40,10 @@ class SearchStaffByEmail : IntegrationTestBase() {
       .expectStatus()
       .isOk
       .expectBody()
-      .jsonPath("$.[?(@.email=='${usernameStartsWithDomain.email}')].firstName").isEqualTo(usernameStartsWithDomain.firstName)
-      .jsonPath("$.[?(@.email=='${usernameStartsWithDomain.email}')].lastName").isEqualTo(usernameStartsWithDomain.lastName)
-      .jsonPath("$.[?(@.email=='${usernameStartsWithDomain.email}')].jobTitle").isEqualTo(usernameStartsWithDomain.jobTitle)
+      .jsonPath("$.length()").isEqualTo(1)
+      .jsonPath("$.[0].firstName").isEqualTo(usernameStartsWithDomain.firstName)
+      .jsonPath("$.[0].lastName").isEqualTo(usernameStartsWithDomain.lastName)
+      .jsonPath("$.[0].jobTitle").isEqualTo(usernameStartsWithDomain.jobTitle)
   }
 
   @Test
