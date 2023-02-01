@@ -71,7 +71,6 @@ class FullReindex : IntegrationTestBase() {
   private fun doFullReindex() {
     webTestClient.post()
       .uri("/admin/refresh-staffs")
-      .headers(setAuthorisation(roles = listOf("ROLE_TEST")))
       .exchange()
       .expectStatus()
       .isOk

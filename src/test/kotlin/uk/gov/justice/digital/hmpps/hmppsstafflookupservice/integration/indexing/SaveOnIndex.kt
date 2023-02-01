@@ -82,7 +82,6 @@ class SaveOnIndex : IntegrationTestBase() {
   private suspend fun refreshStaffReturnFirstSaved(): Staff {
     webTestClient.post()
       .uri("/admin/refresh-staffs")
-      .headers(setAuthorisation(roles = listOf("ROLE_TEST")))
       .exchange()
       .expectStatus()
       .isOk
