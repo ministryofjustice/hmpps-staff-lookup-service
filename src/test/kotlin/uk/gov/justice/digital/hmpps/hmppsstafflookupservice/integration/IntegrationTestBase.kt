@@ -80,11 +80,11 @@ abstract class IntegrationTestBase {
     scopes: List<String> = listOf()
   ): (HttpHeaders) -> Unit = jwtAuthHelper.setAuthorisation(user, roles, scopes)
 
-  fun singlePageGraphResponse() {
-    val usersResponse = listOf(
-      MicrosoftADUser("Abc", "Def", "SPO", "a.user@somehwere.com", "a.user@somehwere.com"),
-      MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE")
-    )
+  fun singlePageGraphResponse(usersResponse: List<MicrosoftADUser> = listOf(
+    MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
+    MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE"),
+    MicrosoftADUser("No Surname", null, null, null, "ABCDE")
+  )) {
     val response = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(null, usersResponse)))
 
@@ -95,7 +95,7 @@ abstract class IntegrationTestBase {
     val skipTokenToSecondPage = "ASKIPTOKEN"
     val firstResponseNextLink = "https://graph.microsoft.com/v1.0/users/?\$select=givenName%2csurname%2cjobTitle%2cmail%2cuserPrincipalName&\$top=5&\$skiptoken=$skipTokenToSecondPage"
     val firstResponseUsers = listOf(
-      MicrosoftADUser("Abc", "Def", "SPO", "a.user@somehwere.com", "a.user@somehwere.com"),
+      MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
       MicrosoftADUser(null, null, null, null, "ABCDE")
     )
     val firstResponse = response().withContentType(APPLICATION_JSON)
@@ -120,7 +120,7 @@ abstract class IntegrationTestBase {
 
   fun erroredGraphResponseWithSuccessOnRetry() {
     val usersResponse = listOf(
-      MicrosoftADUser("Abc", "Def", "SPO", "a.user@somehwere.com", "a.user@somehwere.com"),
+      MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
     )
     val errorResponse = response().withStatusCode(500)
     val successfulResponse = response().withContentType(APPLICATION_JSON)

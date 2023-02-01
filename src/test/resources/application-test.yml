@@ -17,6 +17,8 @@ oauth:
 api.base.url:
   microsoft-graph: http://localhost:9091
 
+email:
+  domain: staff.com
 spring:
   r2dbc:
     properties:
