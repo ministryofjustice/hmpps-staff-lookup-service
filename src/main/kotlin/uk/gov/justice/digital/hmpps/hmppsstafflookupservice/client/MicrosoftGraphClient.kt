@@ -19,7 +19,9 @@ data class MicrosoftADUser(
   val jobTitle: String?,
   val mail: String?,
   val userPrincipalName: String,
-)
+) {
+  fun getEmail() = (mail ?: userPrincipalName).lowercase()
+}
 
 @Service
 class MicrosoftGraphClient(
