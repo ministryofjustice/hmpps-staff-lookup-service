@@ -5,6 +5,9 @@ generic-service:
   ingress:
     host: hmpps-staff-lookup-service.hmpps.service.justice.gov.uk
 
+  env:
+    HMPPS_AUTH_ENDPOINT_URL: https://sign-in.hmpps.service.justice.gov.uk/auth
+
 generic-prometheus-alerts:
   ingress5xxErrorWindowMinutes: 4
 
