@@ -98,13 +98,13 @@ abstract class IntegrationTestBase {
     val firstResponseNextLink = "https://graph.microsoft.com/v1.0/users/?\$select=givenName%2csurname%2cjobTitle%2cmail%2cuserPrincipalName&\$top=5&\$skiptoken=$skipTokenToSecondPage"
     val firstResponseUsers = listOf(
       MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
-      MicrosoftADUser(null, null, null, null, "ABCDE")
+      MicrosoftADUser(null, null, null, null, "b.user@staff.com")
     )
     val firstResponse = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(firstResponseNextLink, firstResponseUsers)))
 
     val secondResponseUsers = listOf(
-      MicrosoftADUser("Mno", "Pqr", null, null, "XYZ")
+      MicrosoftADUser("Mno", "Pqr", null, null, "c.user@staff.com")
     )
     val secondResponse = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(null, secondResponseUsers)))
