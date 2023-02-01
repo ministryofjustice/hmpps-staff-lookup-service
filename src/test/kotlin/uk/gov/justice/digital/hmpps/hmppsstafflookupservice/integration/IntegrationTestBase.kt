@@ -80,11 +80,13 @@ abstract class IntegrationTestBase {
     scopes: List<String> = listOf()
   ): (HttpHeaders) -> Unit = jwtAuthHelper.setAuthorisation(user, roles, scopes)
 
-  fun singlePageGraphResponse(usersResponse: List<MicrosoftADUser> = listOf(
-    MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
-    MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE"),
-    MicrosoftADUser("No Surname", null, null, null, "ABCDE")
-  )) {
+  fun singlePageGraphResponse(
+    usersResponse: List<MicrosoftADUser> = listOf(
+      MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
+      MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE"),
+      MicrosoftADUser("No Surname", null, null, null, "ABCDE")
+    )
+  ) {
     val response = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(null, usersResponse)))
 
