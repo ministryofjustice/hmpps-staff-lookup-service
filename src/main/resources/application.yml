@@ -2,6 +2,8 @@ info.app:
   name: Hmpps Staff Lookup Service
   version: 1.0
 
+email:
+  domain: '@justice.gov.uk'
 spring:
   application:
     name: hmpps-staff-lookup-service
