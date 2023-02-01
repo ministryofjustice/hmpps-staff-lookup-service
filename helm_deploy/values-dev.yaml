@@ -9,4 +9,5 @@ generic-service:
 
   env:
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.dev.json
+    HMPPS_AUTH_ENDPOINT_URL: https://sign-in-dev.hmpps.service.justice.gov.uk/auth
 
