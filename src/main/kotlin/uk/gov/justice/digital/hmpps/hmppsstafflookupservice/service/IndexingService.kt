@@ -14,7 +14,8 @@ class IndexingService(
   val statusStore: StatusStore,
   val telemetryClient: TelemetryClient,
   val microsoftGraphClient: MicrosoftGraphClient,
-  val databaseWriteService: DatabaseWriteService
+  val databaseWriteService: DatabaseWriteService,
+  val swapStaffTablesService: SwapStaffTablesService
 ) {
   fun indexAll() {
     executeAsynchronously {
@@ -25,6 +26,7 @@ class IndexingService(
         graphResponse = microsoftGraphClient.getUsersPage(skipToken)
         databaseWriteService.writeData(graphResponse.value)
       }
+      swapStaffTablesService.swapTables()
     }
     return
   }

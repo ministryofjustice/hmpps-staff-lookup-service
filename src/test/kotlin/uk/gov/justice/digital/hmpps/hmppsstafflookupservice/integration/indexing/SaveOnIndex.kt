@@ -6,7 +6,7 @@ import org.awaitility.kotlin.await
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.client.MicrosoftADUser
-import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.entities.StaffTemp
+import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.entities.Staff
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.integration.IntegrationTestBase
 
 class SaveOnIndex : IntegrationTestBase() {
@@ -79,7 +79,7 @@ class SaveOnIndex : IntegrationTestBase() {
     Assertions.assertEquals(microsoftADUser.mail, staffTemp.email)
   }
 
-  private suspend fun refreshStaffReturnFirstSaved(): StaffTemp {
+  private suspend fun refreshStaffReturnFirstSaved(): Staff {
     webTestClient.post()
       .uri("/admin/refresh-staffs")
       .headers(setAuthorisation(roles = listOf("ROLE_TEST")))
@@ -88,11 +88,11 @@ class SaveOnIndex : IntegrationTestBase() {
       .isOk
     await.until {
       runBlocking {
-        staffTempRepository.count() == 1L
+        staffRepository.count() == 1L
       }
     }
 
-    val staffTemp = staffTempRepository.findAll().first()
+    val staffTemp = staffRepository.findAll().first()
     return staffTemp
   }
 }

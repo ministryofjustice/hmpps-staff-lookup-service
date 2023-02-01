@@ -43,21 +43,21 @@ class FullReindex : IntegrationTestBase() {
   fun `submits the graph data for saving`(): Unit = runBlocking {
     multiplePageGraphResponse()
     doFullReindex()
-    Assertions.assertEquals(2L, staffTempRepository.count())
+    Assertions.assertEquals(2L, staffRepository.count())
   }
 
   @Test
   fun `retries on error getting the graph data`(): Unit = runBlocking {
     erroredGraphResponseWithSuccessOnRetry()
     doFullReindex()
-    Assertions.assertEquals(1L, staffTempRepository.count())
+    Assertions.assertEquals(1L, staffRepository.count())
   }
 
   @Test
   fun `fails eventually when error getting the graph data`(): Unit = runBlocking {
     erroredGraphResponse()
     doFullReindex()
-    Assertions.assertEquals(0, staffTempRepository.count())
+    Assertions.assertEquals(0, staffRepository.count())
   }
 
   @Test
