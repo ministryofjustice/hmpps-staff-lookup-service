@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service
 
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.core.io.ClassPathResource
 import org.springframework.r2dbc.connection.ConnectionFactoryUtils
 import org.springframework.r2dbc.connection.init.ScriptUtils
@@ -12,6 +13,6 @@ class SwapStaffTablesService(private val databaseClient: DatabaseClient) {
 
   suspend fun swapTables() {
     val connection = ConnectionFactoryUtils.getConnection(databaseClient.connectionFactory).awaitSingle()
-    ScriptUtils.executeSqlScript(connection, ClassPathResource("swap-staff-tables.sql")).awaitSingle()
+    ScriptUtils.executeSqlScript(connection, ClassPathResource("swap-staff-tables.sql")).awaitSingleOrNull()
   }
 }
