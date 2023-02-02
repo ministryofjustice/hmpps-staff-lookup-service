@@ -7,6 +7,8 @@ import org.awaitility.kotlin.matches
 import org.awaitility.kotlin.untilCallTo
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.eq
@@ -25,6 +27,9 @@ class FullReindex : IntegrationTestBase() {
   @Autowired
   private lateinit var statusStore: StatusStore
 
+  @Captor
+  private lateinit var telemetryPropertiesCapture: ArgumentCaptor<Map<String, String>>
+
   @Test
   fun `must call microsoft for oauth token`() {
     singlePageGraphResponse()
@@ -36,7 +41,8 @@ class FullReindex : IntegrationTestBase() {
   fun `telemetry call made on success`() {
     singlePageGraphResponse()
     doFullReindex()
-    verify(telemetryClient).trackEvent(eq(TelemetryEventType.INDEX_BUILD_COMPLETE.eventName), any(), anyOrNull())
+    verify(telemetryClient).trackEvent(eq(TelemetryEventType.INDEX_BUILD_COMPLETE.eventName), telemetryPropertiesCapture.capture(), anyOrNull())
+    Assertions.assertEquals("true", telemetryPropertiesCapture.value["success"])
   }
 
   @Test
@@ -65,7 +71,8 @@ class FullReindex : IntegrationTestBase() {
     erroredGraphResponse()
     doFullReindex()
     verify(telemetryClient).trackException(any<Exception>())
-    verify(telemetryClient).trackEvent(eq(TelemetryEventType.INDEX_BUILD_COMPLETE.eventName), any(), anyOrNull())
+    verify(telemetryClient).trackEvent(eq(TelemetryEventType.INDEX_BUILD_COMPLETE.eventName), telemetryPropertiesCapture.capture(), anyOrNull())
+    Assertions.assertEquals("false", telemetryPropertiesCapture.value["success"])
   }
 
   private fun doFullReindex() {
