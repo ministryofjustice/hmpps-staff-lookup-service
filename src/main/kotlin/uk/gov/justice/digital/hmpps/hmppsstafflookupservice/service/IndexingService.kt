@@ -24,9 +24,13 @@ class IndexingService(
       while (graphResponse.nextLink != null) {
         val skipToken = graphResponse.nextLink!!.substringAfter("skiptoken=")
         graphResponse = microsoftGraphClient.getUsersPage(skipToken)
+        println("Getting graph data")
         databaseWriteService.writeData(graphResponse.value)
+        println("Got graph data")
       }
+      println("Doing swap")
       swapStaffTablesService.swapTables()
+      println("Done swap")
     }
     return
   }
