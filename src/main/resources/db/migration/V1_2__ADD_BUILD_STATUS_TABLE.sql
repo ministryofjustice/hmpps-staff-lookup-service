@@ -1,4 +1,4 @@
-drop table if exists unallocated_cases;
+drop table if exists build_status;
 
 CREATE TABLE build_status(
     id SERIAL PRIMARY KEY,
