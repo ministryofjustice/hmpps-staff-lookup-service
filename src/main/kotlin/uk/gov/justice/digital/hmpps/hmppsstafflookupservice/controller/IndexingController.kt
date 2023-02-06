@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service.IndexingService
 
@@ -22,7 +23,7 @@ class IndexingController(
     ]
   )
   @PostMapping("/admin/refresh-staffs")
-  fun fullReindex() {
-    indexingService.indexAll()
+  suspend fun fullReindex(@RequestParam(defaultValue = "true") checkBuildRequired: Boolean) {
+    indexingService.indexAll(checkBuildRequired)
   }
 }

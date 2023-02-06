@@ -11,14 +11,14 @@ import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service.telemetry.Te
 
 @Service
 class IndexingService(
-  val statusStore: StatusStore,
+  val statusService: IndexingStatusService,
   val telemetryClient: TelemetryClient,
   val microsoftGraphClient: MicrosoftGraphClient,
   val databaseWriteService: DatabaseWriteService,
   val swapStaffTablesService: SwapStaffTablesService
 ) {
-  fun indexAll() {
-    executeAsynchronously {
+  suspend fun indexAll(checkIndexingRequired: Boolean) {
+    executeAsynchronously(checkIndexingRequired) {
       var graphResponse = microsoftGraphClient.getUsersPage(null)
       databaseWriteService.writeData(graphResponse.value)
       while (graphResponse.nextLink != null) {
@@ -31,8 +31,10 @@ class IndexingService(
     return
   }
 
-  private fun executeAsynchronously(indexingBlock: suspend () -> Unit) {
-    statusStore.checkAndSetInProgress()
+  private suspend fun executeAsynchronously(checkIndexingRequired: Boolean, indexingBlock: suspend () -> Unit) {
+    if (checkIndexingRequired && !statusService.checkIndexingRequired()) {
+      return
+    }
     CoroutineScope(Dispatchers.IO).launch {
       var successfulBuild = false
       val stopWatch = StopWatch()
@@ -44,7 +46,7 @@ class IndexingService(
         telemetryClient.trackException(e)
       } finally {
         stopWatch.stop()
-        statusStore.setComplete()
+        statusService.indexingComplete(successfulBuild)
         telemetryClient.trackEvent(
           TelemetryEventType.INDEX_BUILD_COMPLETE.eventName,
           mapOf(
