@@ -17,7 +17,7 @@ class IndexingService(
   val databaseWriteService: DatabaseWriteService,
   val swapStaffTablesService: SwapStaffTablesService
 ) {
-  fun indexAll(checkIndexingRequired: Boolean) {
+  suspend fun indexAll(checkIndexingRequired: Boolean) {
     executeAsynchronously(checkIndexingRequired) {
       var graphResponse = microsoftGraphClient.getUsersPage(null)
       databaseWriteService.writeData(graphResponse.value)
@@ -31,7 +31,7 @@ class IndexingService(
     return
   }
 
-  private fun executeAsynchronously(checkIndexingRequired: Boolean, indexingBlock: suspend () -> Unit) {
+  private suspend fun executeAsynchronously(checkIndexingRequired: Boolean, indexingBlock: suspend () -> Unit) {
     if (checkIndexingRequired && !statusService.checkIndexingRequired()) {
       return
     }

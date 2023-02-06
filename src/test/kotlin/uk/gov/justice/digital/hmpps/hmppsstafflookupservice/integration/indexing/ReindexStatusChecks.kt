@@ -1,23 +1,26 @@
 package uk.gov.justice.digital.hmpps.hmppsstafflookupservice.integration.indexing
 
+import kotlinx.coroutines.runBlocking
 import org.awaitility.kotlin.await
 import org.awaitility.kotlin.matches
 import org.awaitility.kotlin.untilCallTo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.entities.BuildStatus
+import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.BuildStatusRepository
+import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.SINGLE_ITEM_ID
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.integration.IntegrationTestBase
-import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service.StatusStore
 import java.time.LocalDateTime
 
 class ReindexStatusChecks : IntegrationTestBase() {
 
   @Autowired
-  private lateinit var statusStore: StatusStore
+  private lateinit var buildStatusRepository: BuildStatusRepository
 
   @Test
   fun `does not perform a re-index when there has been a successful build today`() {
     lastSuccessfulBuild(0)
-    doFullReindex(true)
+    requestReindex()
     verifyMicrosoftGraphCallTimes(0)
   }
 
@@ -25,7 +28,7 @@ class ReindexStatusChecks : IntegrationTestBase() {
   fun `performs a re-index if there has not been a successful build today`() {
     lastSuccessfulBuild(1)
     singlePageGraphResponse()
-    doFullReindex(true)
+    doReindex(true)
     verifyMicrosoftGraphCallTimes(1)
   }
 
@@ -33,20 +36,61 @@ class ReindexStatusChecks : IntegrationTestBase() {
   fun `performs a re-index if checks bypassed and there has been a successful build today`() {
     lastSuccessfulBuild(0)
     singlePageGraphResponse()
-    doFullReindex(false)
+    doReindex(false)
     verifyMicrosoftGraphCallTimes(1)
   }
 
-  private fun lastSuccessfulBuild(daysAgo: Long) {
-    statusStore.lastSuccessfulBuildDate = LocalDateTime.now().minusDays(daysAgo)
+  @Test
+  fun `updates the failed build time on failure`() {
+    erroredGraphResponse()
+    doFailedReindex()
   }
 
-  private fun doFullReindex(checkBuildRequired: Boolean) {
+  private fun lastSuccessfulBuild(daysAgo: Long) {
+    val lastSuccessfulBuildDate = LocalDateTime.now().minusDays(daysAgo)
+    runBlocking {
+      buildStatusRepository.save(
+        BuildStatus(SINGLE_ITEM_ID, null, lastSuccessfulBuildDate)
+      )
+    }
+  }
+
+  private fun requestReindex() {
+    webTestClient.post()
+      .uri("/admin/refresh-staffs")
+      .exchange()
+      .expectStatus()
+      .isOk
+  }
+
+  private fun doReindex(checkBuildRequired: Boolean) {
     webTestClient.post()
       .uri("/admin/refresh-staffs?checkBuildRequired=$checkBuildRequired")
       .exchange()
       .expectStatus()
       .isOk
-    await untilCallTo { statusStore.isBuildInProgress() } matches { it == false }
+    await untilCallTo {
+      runBlocking {
+        buildStatusRepository.findById(SINGLE_ITEM_ID)
+      }
+    } matches { it!!.lastFailedBuildDateTime == null && it.lastSuccessfulBuildDateTime != null }
+  }
+
+  private fun doFailedReindex() {
+    runBlocking {
+      buildStatusRepository.save(
+        BuildStatus(SINGLE_ITEM_ID, null, null)
+      )
+    }
+    webTestClient.post()
+      .uri("/admin/refresh-staffs")
+      .exchange()
+      .expectStatus()
+      .isOk
+    await untilCallTo {
+      runBlocking {
+        buildStatusRepository.findById(SINGLE_ITEM_ID)
+      }
+    } matches { it!!.lastFailedBuildDateTime != null && it.lastSuccessfulBuildDateTime == null }
   }
 }

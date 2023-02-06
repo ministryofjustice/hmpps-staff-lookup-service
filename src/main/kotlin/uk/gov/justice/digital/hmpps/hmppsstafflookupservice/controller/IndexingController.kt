@@ -23,7 +23,7 @@ class IndexingController(
     ]
   )
   @PostMapping("/admin/refresh-staffs")
-  fun fullReindex(@RequestParam(defaultValue = "true") checkBuildRequired: Boolean) {
+  suspend fun fullReindex(@RequestParam(defaultValue = "true") checkBuildRequired: Boolean) {
     indexingService.indexAll(checkBuildRequired)
   }
 }
