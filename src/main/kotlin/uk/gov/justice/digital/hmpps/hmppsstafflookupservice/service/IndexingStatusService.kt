@@ -11,14 +11,11 @@ class IndexingStatusService(
   val statusRepository: BuildStatusRepository
 ) {
   suspend fun checkIndexingRequired(): Boolean {
-    try {
-      val lastSuccessfulBuildDateTime = statusRepository.findById(SINGLE_ITEM_ID)!!.lastSuccessfulBuildDateTime
-      if (lastSuccessfulBuildDateTime != null && lastSuccessfulBuildDateTime.toLocalDate().isEqual(LocalDate.now())) {
-        return false
-      }
-      return true
-    } finally {
+    val lastSuccessfulBuildDateTime = statusRepository.findById(SINGLE_ITEM_ID)!!.lastSuccessfulBuildDateTime
+    if (lastSuccessfulBuildDateTime != null && lastSuccessfulBuildDateTime.toLocalDate().isEqual(LocalDate.now())) {
+      return false
     }
+    return true
   }
 
   suspend fun indexingComplete(successfulBuild: Boolean) {
