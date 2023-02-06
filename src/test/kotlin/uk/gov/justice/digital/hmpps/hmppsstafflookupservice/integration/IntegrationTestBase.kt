@@ -95,7 +95,7 @@ abstract class IntegrationTestBase {
 
   fun multiplePageGraphResponse() {
     val skipTokenToSecondPage = "ASKIPTOKEN"
-    val firstResponseNextLink = "https://graph.microsoft.com/v1.0/users/?\$select=givenName%2csurname%2cjobTitle%2cmail%2cuserPrincipalName&\$top=5&\$skiptoken=$skipTokenToSecondPage"
+    val firstResponseNextLink = "https://graph.microsoft.com/v1.0/users/?\$select=givenName%2csurname%2cjobTitle%2cmail%2cuserPrincipalName&\$top=100&\$skiptoken=$skipTokenToSecondPage"
     val firstResponseUsers = listOf(
       MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
       MicrosoftADUser(null, null, null, null, "b.user@staff.com")
@@ -166,6 +166,14 @@ abstract class IntegrationTestBase {
           )
         ),
       VerificationTimes.atLeast(1)
+    )
+  }
+
+  fun verifyMicrosoftGraphCallTimes(numberOfTimes: Int) {
+    microsoftGraphMock.verify(
+      request()
+        .withPath("/v1.0/users/"),
+      VerificationTimes.exactly(numberOfTimes)
     )
   }
 }

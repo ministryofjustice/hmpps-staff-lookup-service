@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.hmppsstafflookupservice.client
 import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClientRequest
@@ -25,13 +26,14 @@ data class MicrosoftADUser(
 
 @Service
 class MicrosoftGraphClient(
-  @Qualifier("microsoftGraphApiWebClient") private val webClient: WebClient
+  @Qualifier("microsoftGraphApiWebClient") private val webClient: WebClient,
+  @Value("\${microsoft.graph.batch-size:100}") private val batchSize: Int
 ) {
   suspend fun getUsersPage(skipToken: String?): UserResponse {
     return webClient
       .get()
       .uri(
-        "/v1.0/users/?\$select=givenName,surname,jobTitle,mail,userPrincipalName&\$top=5" +
+        "/v1.0/users/?\$select=givenName,surname,jobTitle,mail,userPrincipalName&\$top=$batchSize" +
           (skipToken?.let { "&\$skiptoken=$skipToken" } ?: "")
       )
       .httpRequest {
