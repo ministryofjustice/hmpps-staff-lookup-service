@@ -72,6 +72,10 @@ workflows:
           context:
             - hmpps-common-vars
             - hmpps-staff-lookup-service-preprod
+          filters:
+            branches:
+              only:
+                - main
           requires:
             - validate
             - build_docker
