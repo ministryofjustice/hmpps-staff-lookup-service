@@ -16,7 +16,7 @@ Currently there is only one endpoint, which searches for users with e-mails that
 
 The main endpoint of this API invokes a full re-build of the database with the latest data from Microsoft AD.
 It will only re-build if there has not been a successful build already done today.
-This check can be overridden by the `overrideChecks` request parameter being set the `true`,
+This check can be overridden by the `?checkBuildRequired=$` request parameter being set the `false`,
 but it is important to check there isn't a re-index currently in progress before doing this (see below).
 
 Note that the re-index is done asynchronously, i.e. the endpoint will return immediately regardless of whether a re-index was attempted.
