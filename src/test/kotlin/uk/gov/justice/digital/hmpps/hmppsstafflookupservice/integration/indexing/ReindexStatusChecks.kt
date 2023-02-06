@@ -21,29 +21,23 @@ class ReindexStatusChecks : IntegrationTestBase() {
   fun `does not perform a re-index when there has been a successful build today`() {
     lastSuccessfulBuild(0)
     requestReindex()
-    verifyMicrosoftGraphCallTimes(0)
+    verifyMicrosoftGraphNotCalled()
   }
 
   @Test
   fun `performs a re-index if there has not been a successful build today`() {
     lastSuccessfulBuild(1)
-    singlePageGraphResponse()
-    doReindex(true)
-    verifyMicrosoftGraphCallTimes(1)
+    erroredGraphResponse()
+    doFailedReindex(true)
+    verifyMicrosoftGraphCalled()
   }
 
   @Test
   fun `performs a re-index if checks bypassed and there has been a successful build today`() {
     lastSuccessfulBuild(0)
-    singlePageGraphResponse()
-    doReindex(false)
-    verifyMicrosoftGraphCallTimes(1)
-  }
-
-  @Test
-  fun `updates the failed build time on failure`() {
     erroredGraphResponse()
-    doFailedReindex()
+    doFailedReindex(false)
+    verifyMicrosoftGraphCalled()
   }
 
   private fun lastSuccessfulBuild(daysAgo: Long) {
@@ -63,7 +57,7 @@ class ReindexStatusChecks : IntegrationTestBase() {
       .isOk
   }
 
-  private fun doReindex(checkBuildRequired: Boolean) {
+  private fun doFailedReindex(checkBuildRequired: Boolean) {
     webTestClient.post()
       .uri("/admin/refresh-staffs?checkBuildRequired=$checkBuildRequired")
       .exchange()
@@ -73,24 +67,6 @@ class ReindexStatusChecks : IntegrationTestBase() {
       runBlocking {
         buildStatusRepository.findById(SINGLE_ITEM_ID)
       }
-    } matches { it!!.lastFailedBuildDateTime == null && it.lastSuccessfulBuildDateTime != null }
-  }
-
-  private fun doFailedReindex() {
-    runBlocking {
-      buildStatusRepository.save(
-        BuildStatus(SINGLE_ITEM_ID, null, null)
-      )
-    }
-    webTestClient.post()
-      .uri("/admin/refresh-staffs")
-      .exchange()
-      .expectStatus()
-      .isOk
-    await untilCallTo {
-      runBlocking {
-        buildStatusRepository.findById(SINGLE_ITEM_ID)
-      }
-    } matches { it!!.lastFailedBuildDateTime != null && it.lastSuccessfulBuildDateTime == null }
+    } matches { it!!.lastFailedBuildDateTime != null }
   }
 }

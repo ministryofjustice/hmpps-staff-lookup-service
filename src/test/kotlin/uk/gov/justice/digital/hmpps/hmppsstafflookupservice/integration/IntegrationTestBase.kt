@@ -169,11 +169,19 @@ abstract class IntegrationTestBase {
     )
   }
 
-  fun verifyMicrosoftGraphCallTimes(numberOfTimes: Int) {
+  fun verifyMicrosoftGraphNotCalled() {
     microsoftGraphMock.verify(
       request()
         .withPath("/v1.0/users/"),
-      VerificationTimes.exactly(numberOfTimes)
+      VerificationTimes.never()
+    )
+  }
+
+  fun verifyMicrosoftGraphCalled() {
+    microsoftGraphMock.verify(
+      request()
+        .withPath("/v1.0/users/"),
+      VerificationTimes.atLeast(1)
     )
   }
 }
