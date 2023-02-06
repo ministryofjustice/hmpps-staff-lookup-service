@@ -81,7 +81,7 @@ class SaveOnIndex : IntegrationTestBase() {
 
   private suspend fun refreshStaffReturnFirstSaved(): Staff {
     webTestClient.post()
-      .uri("/admin/refresh-staffs")
+      .uri("/admin/refresh-staffs?checkBuildRequired=false")
       .exchange()
       .expectStatus()
       .isOk
