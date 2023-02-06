@@ -25,8 +25,7 @@ class IndexingStatusService(
     val buildEntity = statusRepository.findById(SINGLE_ITEM_ID)
     if (successfulBuild) {
       buildEntity!!.lastSuccessfulBuildDateTime = LocalDateTime.now()
-    }
-    else {
+    } else {
       buildEntity!!.lastFailedBuildDateTime = LocalDateTime.now()
     }
     statusRepository.save(buildEntity)
