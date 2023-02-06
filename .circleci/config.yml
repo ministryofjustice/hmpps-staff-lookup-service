@@ -64,36 +64,40 @@ workflows:
             - build_docker
             - helm_lint
           helm_timeout: 5m
-#      - hmpps/deploy_env:
-#          name: deploy_preprod
-#          env: "preprod"
-#          jira_update: true
-#          jira_env_type: staging
-#          context:
-#            - hmpps-common-vars
-#            - hmpps-staff-lookup-service-preprod
-#          requires:
-#            - validate
-#            - build_docker
-#            - helm_lint
-#      - request-prod-approval:
-#          type: approval
-#          requires:
-#            - deploy_preprod
-#            - deploy_dev
-#      - hmpps/deploy_env:
-#          name: deploy_prod
-#          env: "prod"
-#          jira_update: true
-#          jira_env_type: production
-#          slack_notification: true
-#          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
-#          context:
-#            - hmpps-common-vars
-#            - hmpps-staff-lookup-service-prod
-#          requires:
-#            - request-prod-approval
-#          helm_timeout: 5m
+      - hmpps/deploy_env:
+          name: deploy_preprod
+          env: "preprod"
+          jira_update: true
+          jira_env_type: staging
+          context:
+            - hmpps-common-vars
+            - hmpps-staff-lookup-service-preprod
+          filters:
+            branches:
+              only:
+                - main
+          requires:
+            - validate
+            - build_docker
+            - helm_lint
+      - request-prod-approval:
+          type: approval
+          requires:
+            - deploy_preprod
+            - deploy_dev
+      - hmpps/deploy_env:
+          name: deploy_prod
+          env: "prod"
+          jira_update: true
+          jira_env_type: production
+          slack_notification: true
+          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
+          context:
+            - hmpps-common-vars
+            - hmpps-staff-lookup-service-prod
+          requires:
+            - request-prod-approval
+          helm_timeout: 5m
 
   security:
     triggers:
