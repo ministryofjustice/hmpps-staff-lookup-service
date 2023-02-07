@@ -1,15 +1,21 @@
-package uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service
+package uk.gov.justice.digital.hmpps.hmppsstafflookupservice.integration.service
 
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.MockBean
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.StaffRepository
+import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.integration.IntegrationTestBase
+import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service.WarmUpDatabaseService
 
-class WarmUpDatabaseServiceTests {
+class WarmUpDatabaseServiceTests : IntegrationTestBase() {
 
-  private val staffRepository = Mockito.mock(StaffRepository::class.java)
+  @MockBean
+  override lateinit var staffRepository: StaffRepository
 
-  private val warmUpDatabaseService = WarmUpDatabaseService(staffRepository)
+  @Autowired
+  protected lateinit var warmUpDatabaseService: WarmUpDatabaseService
 
   private val expectedCharacters = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
   @Test
