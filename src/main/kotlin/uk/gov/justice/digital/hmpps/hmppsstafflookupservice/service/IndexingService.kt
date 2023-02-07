@@ -15,7 +15,8 @@ class IndexingService(
   val telemetryClient: TelemetryClient,
   val microsoftGraphClient: MicrosoftGraphClient,
   val databaseWriteService: DatabaseWriteService,
-  val swapStaffTablesService: SwapStaffTablesService
+  val swapStaffTablesService: SwapStaffTablesService,
+  val warmUpDatabaseService: WarmUpDatabaseService
 ) {
   suspend fun indexAll(checkIndexingRequired: Boolean) {
     executeAsynchronously(checkIndexingRequired) {
@@ -27,6 +28,7 @@ class IndexingService(
         databaseWriteService.writeData(graphResponse.value)
       }
       swapStaffTablesService.swapTables()
+      warmUpDatabaseService.warmUpStaff()
     }
     return
   }
