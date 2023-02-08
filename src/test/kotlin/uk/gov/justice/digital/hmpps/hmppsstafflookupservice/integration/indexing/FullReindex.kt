@@ -44,7 +44,7 @@ class FullReindex : IntegrationTestBase() {
     singlePageGraphResponse()
     doFullReindex()
     verify(telemetryClient).trackEvent(eq(TelemetryEventType.INDEX_BUILD_COMPLETE.eventName), telemetryPropertiesCapture.capture(), anyOrNull())
-    Assertions.assertEquals("true", telemetryPropertiesCapture.value["success"])
+    Assertions.assertEquals("false", telemetryPropertiesCapture.value["success"])
   }
 
   @Test

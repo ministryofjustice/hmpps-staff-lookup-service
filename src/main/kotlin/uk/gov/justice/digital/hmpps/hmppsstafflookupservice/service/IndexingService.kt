@@ -52,7 +52,7 @@ class IndexingService(
         telemetryClient.trackEvent(
           TelemetryEventType.INDEX_BUILD_COMPLETE.eventName,
           mapOf(
-            "success" to successfulBuild.toString(),
+            "success" to "false", // to test alert, revert once alert has gone off
             "timeTaken" to stopWatch.totalTimeSeconds.toString(),
           ),
           null
