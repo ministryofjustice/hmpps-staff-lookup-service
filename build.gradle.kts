@@ -21,7 +21,7 @@ dependencies {
 
   implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.2")
 
-  implementation("io.opentelemetry:opentelemetry-api:1.22.0")
+  implementation("io.opentelemetry:opentelemetry-api:1.23.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.flywaydb:flyway-core")
