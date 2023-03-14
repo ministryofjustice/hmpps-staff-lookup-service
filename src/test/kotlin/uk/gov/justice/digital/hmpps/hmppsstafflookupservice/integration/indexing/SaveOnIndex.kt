@@ -14,7 +14,11 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must save into staff temp table`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
-      "Abc", "Def", "SPO", "a.mail@staff.com", "a.user@staff.com"
+      "Abc",
+      "Def",
+      "SPO",
+      "a.mail@staff.com",
+      "a.user@staff.com",
     )
 
     singlePageGraphResponse(listOf(microsoftADUser))
@@ -30,7 +34,11 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must fallback on user principal name when mail doesn't exist`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
-      "Abc", "Def", "SPO", null, "a.user@staff.com"
+      "Abc",
+      "Def",
+      "SPO",
+      null,
+      "a.user@staff.com",
     )
 
     singlePageGraphResponse(listOf(microsoftADUser))
@@ -42,10 +50,18 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must not store when no name`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
-      "Abc", "Def", "SPO", "a.mail@staff.com", "a.user@staff.com"
+      "Abc",
+      "Def",
+      "SPO",
+      "a.mail@staff.com",
+      "a.user@staff.com",
     )
     val noNameUser = MicrosoftADUser(
-      null, null, "SPO", "b.mail@staff.com", "b.user@staff.com"
+      null,
+      null,
+      "SPO",
+      "b.mail@staff.com",
+      "b.user@staff.com",
     )
     singlePageGraphResponse(listOf(microsoftADUser, noNameUser))
 
@@ -56,7 +72,11 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must store when no surname`(): Unit = runBlocking {
     val noSurnameUser = MicrosoftADUser(
-      "sharedmailbox", null, "SPO", "sharedmailbox@staff.com", "sharedmailbox@staff.com"
+      "sharedmailbox",
+      null,
+      "SPO",
+      "sharedmailbox@staff.com",
+      "sharedmailbox@staff.com",
     )
     singlePageGraphResponse(listOf(noSurnameUser))
 
@@ -67,7 +87,11 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must store email in lower case`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
-      "Abc", "Def", "SPO", "A.MAIL@STAFF.COM", "a.user@staff.com"
+      "Abc",
+      "Def",
+      "SPO",
+      "A.MAIL@STAFF.COM",
+      "a.user@staff.com",
     )
 
     singlePageGraphResponse(listOf(microsoftADUser))
@@ -79,10 +103,18 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must not store when email ends in different domain`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
-      "Abc", "Def", "SPO", "a.mail@staff.com", "a.user@staff.com"
+      "Abc",
+      "Def",
+      "SPO",
+      "a.mail@staff.com",
+      "a.user@staff.com",
     )
     val differentDomain = MicrosoftADUser(
-      "Abc", "Def", "SPO", "a.mail@different.domain.com", "a.user@different.domain.com"
+      "Abc",
+      "Def",
+      "SPO",
+      "a.mail@different.domain.com",
+      "a.user@different.domain.com",
     )
     singlePageGraphResponse(listOf(differentDomain, microsoftADUser))
 

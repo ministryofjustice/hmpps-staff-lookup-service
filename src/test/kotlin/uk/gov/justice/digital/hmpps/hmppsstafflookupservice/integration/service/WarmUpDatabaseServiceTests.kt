@@ -18,6 +18,7 @@ class WarmUpDatabaseServiceTests : IntegrationTestBase() {
   protected lateinit var warmUpDatabaseService: WarmUpDatabaseService
 
   private val expectedCharacters = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+
   @Test
   fun `must query database with all lowercase alphabet characters`(): Unit = runBlocking {
     warmUpDatabaseService.warmUpStaff()

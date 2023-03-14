@@ -16,7 +16,7 @@ class IndexingService(
   val microsoftGraphClient: MicrosoftGraphClient,
   val databaseWriteService: DatabaseWriteService,
   val swapStaffTablesService: SwapStaffTablesService,
-  val warmUpDatabaseService: WarmUpDatabaseService
+  val warmUpDatabaseService: WarmUpDatabaseService,
 ) {
   suspend fun indexAll(checkIndexingRequired: Boolean) {
     executeAsynchronously(checkIndexingRequired) {
@@ -55,7 +55,7 @@ class IndexingService(
             "success" to successfulBuild.toString(),
             "timeTaken" to stopWatch.totalTimeSeconds.toString(),
           ),
-          null
+          null,
         )
       }
     }

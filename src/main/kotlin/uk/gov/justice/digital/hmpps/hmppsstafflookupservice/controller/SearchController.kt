@@ -15,14 +15,14 @@ import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service.SearchStaffS
 @RestController
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 class SearchController(
-  private val searchStaffService: SearchStaffService
+  private val searchStaffService: SearchStaffService,
 ) {
 
   @Operation(summary = "Search Staff by partial match email")
   @ApiResponses(
     value = [
-      ApiResponse(responseCode = "200", description = "OK")
-    ]
+      ApiResponse(responseCode = "200", description = "OK"),
+    ],
   )
   @GetMapping("/staff/search")
   suspend fun searchStaff(@RequestParam(required = true) email: String): Flow<StaffDetails> = searchStaffService.searchStaff(email)

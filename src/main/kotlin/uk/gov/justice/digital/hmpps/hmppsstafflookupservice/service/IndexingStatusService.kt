@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 @Service
 class IndexingStatusService(
-  val statusRepository: BuildStatusRepository
+  val statusRepository: BuildStatusRepository,
 ) {
   suspend fun checkIndexingRequired(): Boolean {
     val lastSuccessfulBuildDateTime = statusRepository.findById(SINGLE_ITEM_ID)!!.lastSuccessfulBuildDateTime

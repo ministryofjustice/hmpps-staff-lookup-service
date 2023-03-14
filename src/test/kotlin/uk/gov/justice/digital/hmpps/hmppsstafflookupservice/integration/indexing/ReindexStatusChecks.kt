@@ -44,7 +44,7 @@ class ReindexStatusChecks : IntegrationTestBase() {
     val lastSuccessfulBuildDate = LocalDateTime.now().minusDays(daysAgo)
     runBlocking {
       buildStatusRepository.save(
-        BuildStatus(SINGLE_ITEM_ID, null, lastSuccessfulBuildDate)
+        BuildStatus(SINGLE_ITEM_ID, null, lastSuccessfulBuildDate),
       )
     }
   }

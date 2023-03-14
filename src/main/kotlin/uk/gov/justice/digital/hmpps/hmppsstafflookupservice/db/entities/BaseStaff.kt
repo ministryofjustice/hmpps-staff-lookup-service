@@ -7,5 +7,5 @@ open class BaseStaff(
   open val firstName: String,
   open val lastName: String? = null,
   open val jobTitle: String? = null,
-  open val email: String
+  open val email: String,
 )
