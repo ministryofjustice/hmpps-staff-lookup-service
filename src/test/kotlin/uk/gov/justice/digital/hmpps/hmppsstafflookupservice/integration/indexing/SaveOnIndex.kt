@@ -54,6 +54,17 @@ class SaveOnIndex : IntegrationTestBase() {
   }
 
   @Test
+  fun `must store when no surname`(): Unit = runBlocking {
+    val noSurnameUser = MicrosoftADUser(
+      "sharedmailbox", null, "SPO", "sharedmailbox@staff.com", "sharedmailbox@staff.com"
+    )
+    singlePageGraphResponse(listOf(noSurnameUser))
+
+    val staffTemp = refreshStaffReturnFirstSaved()
+    Assertions.assertEquals(noSurnameUser.mail, staffTemp.email)
+  }
+
+  @Test
   fun `must store email in lower case`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
       "Abc", "Def", "SPO", "A.MAIL@STAFF.COM", "a.user@staff.com"

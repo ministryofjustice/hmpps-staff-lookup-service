@@ -11,6 +11,7 @@ class SearchStaffByEmail : IntegrationTestBase() {
   fun `must return staff by partial matched email`(): Unit = runBlocking {
     val first = staffRepository.save(Staff(firstName = "John", lastName = "Smith", jobTitle = "Probation Practitioner", email = "john.smith@staff.com"))
     val second = staffRepository.save(Staff(firstName = "Joanne", lastName = "Smith", email = "joanne.smith@staff.com"))
+    val noSurname = staffRepository.save(Staff(firstName = "TeamSmilesShared", email = "teamsmilesshared@staff.com"))
 
     webTestClient.get()
       .uri("/staff/search?email=sm")
@@ -21,9 +22,11 @@ class SearchStaffByEmail : IntegrationTestBase() {
       .expectBody()
       .jsonPath("$.[?(@.email=='${first.email}')].firstName").isEqualTo(first.firstName)
       .jsonPath("$.[?(@.email=='${first.email}')].lastName").isEqualTo(first.lastName)
+      .jsonPath("$.[?(@.email=='${first.email}')].fullName").isEqualTo("${first.firstName} ${first.lastName}")
       .jsonPath("$.[?(@.email=='${first.email}')].jobTitle").isEqualTo(first.jobTitle)
       .jsonPath("$.[?(@.email=='${second.email}')].firstName").isEqualTo(second.firstName)
       .jsonPath("$.[?(@.email=='${second.email}')].lastName").isEqualTo(second.lastName)
+      .jsonPath("$.[?(@.email=='${noSurname.email}')].fullName").isEqualTo("${noSurname.firstName}")
   }
 
   @Test
