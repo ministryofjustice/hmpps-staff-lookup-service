@@ -21,7 +21,7 @@ class ReactiveResourceServerConfiguration {
           "/webjars/**", "/favicon.ico", "/csrf",
           "/health/**", "/info", "/h2-console/**",
           "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
-          "/admin/**"
+          "/admin/**",
         ).permitAll()
           .anyExchange().authenticated()
       }

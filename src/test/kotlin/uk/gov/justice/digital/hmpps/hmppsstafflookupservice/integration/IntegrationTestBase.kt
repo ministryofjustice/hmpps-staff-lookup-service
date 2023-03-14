@@ -77,15 +77,15 @@ abstract class IntegrationTestBase {
   internal fun setAuthorisation(
     user: String = "ADMIN",
     roles: List<String> = listOf(),
-    scopes: List<String> = listOf()
+    scopes: List<String> = listOf(),
   ): (HttpHeaders) -> Unit = jwtAuthHelper.setAuthorisation(user, roles, scopes)
 
   fun singlePageGraphResponse(
     usersResponse: List<MicrosoftADUser> = listOf(
       MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
       MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE"),
-      MicrosoftADUser("No Surname", null, null, null, "ABCDE")
-    )
+      MicrosoftADUser("No Surname", null, null, null, "ABCDE"),
+    ),
   ) {
     val response = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(null, usersResponse)))
@@ -98,13 +98,13 @@ abstract class IntegrationTestBase {
     val firstResponseNextLink = "https://graph.microsoft.com/v1.0/users/?\$select=givenName%2csurname%2cjobTitle%2cmail%2cuserPrincipalName&\$top=100&\$skiptoken=$skipTokenToSecondPage"
     val firstResponseUsers = listOf(
       MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
-      MicrosoftADUser(null, null, null, null, "b.user@staff.com")
+      MicrosoftADUser(null, null, null, null, "b.user@staff.com"),
     )
     val firstResponse = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(firstResponseNextLink, firstResponseUsers)))
 
     val secondResponseUsers = listOf(
-      MicrosoftADUser("Mno", "Pqr", null, null, "c.user@staff.com")
+      MicrosoftADUser("Mno", "Pqr", null, null, "c.user@staff.com"),
     )
     val secondResponse = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(null, secondResponseUsers)))
@@ -113,10 +113,10 @@ abstract class IntegrationTestBase {
       request().withPath("/v1.0/users/"),
       Times.once(),
       TimeToLive.unlimited(),
-      10
+      10,
     ).respond(firstResponse)
     microsoftGraphMock.`when`(
-      request().withPath("/v1.0/users/").withQueryStringParameter("\$skiptoken", skipTokenToSecondPage)
+      request().withPath("/v1.0/users/").withQueryStringParameter("\$skiptoken", skipTokenToSecondPage),
     ).respond(secondResponse)
   }
 
@@ -132,10 +132,10 @@ abstract class IntegrationTestBase {
       request().withPath("/v1.0/users/"),
       Times.once(),
       TimeToLive.unlimited(),
-      10
+      10,
     ).respond(errorResponse)
     microsoftGraphMock.`when`(
-      request().withPath("/v1.0/users/")
+      request().withPath("/v1.0/users/"),
     ).respond(successfulResponse)
   }
 
@@ -143,7 +143,7 @@ abstract class IntegrationTestBase {
     val errorResponse = response().withStatusCode(500)
 
     microsoftGraphMock.`when`(
-      request().withPath("/v1.0/users/")
+      request().withPath("/v1.0/users/"),
     ).respond(errorResponse)
   }
 
@@ -162,10 +162,10 @@ abstract class IntegrationTestBase {
               grant_type: 'client_credentials'
             }
             """.trimIndent(),
-            MatchType.STRICT
-          )
+            MatchType.STRICT,
+          ),
         ),
-      VerificationTimes.atLeast(1)
+      VerificationTimes.atLeast(1),
     )
   }
 
@@ -173,7 +173,7 @@ abstract class IntegrationTestBase {
     microsoftGraphMock.verify(
       request()
         .withPath("/v1.0/users/"),
-      VerificationTimes.never()
+      VerificationTimes.never(),
     )
   }
 
@@ -181,7 +181,7 @@ abstract class IntegrationTestBase {
     microsoftGraphMock.verify(
       request()
         .withPath("/v1.0/users/"),
-      VerificationTimes.atLeast(1)
+      VerificationTimes.atLeast(1),
     )
   }
 }

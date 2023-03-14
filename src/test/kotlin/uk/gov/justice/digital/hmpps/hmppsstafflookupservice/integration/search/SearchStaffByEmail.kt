@@ -31,7 +31,6 @@ class SearchStaffByEmail : IntegrationTestBase() {
 
   @Test
   fun `must favour username over domain name`(): Unit = runBlocking {
-
     staffRepository.save(Staff(firstName = "Andrew", lastName = "Smith", jobTitle = "Probation Practitioner", email = "andrew.smith@staff.com"))
 
     val usernameStartsWithDomain = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@staff.com"))

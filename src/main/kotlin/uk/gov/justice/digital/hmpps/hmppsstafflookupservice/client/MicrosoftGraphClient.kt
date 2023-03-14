@@ -27,14 +27,14 @@ data class MicrosoftADUser(
 @Service
 class MicrosoftGraphClient(
   @Qualifier("microsoftGraphApiWebClient") private val webClient: WebClient,
-  @Value("\${microsoft.graph.batch-size:100}") private val batchSize: Int
+  @Value("\${microsoft.graph.batch-size:100}") private val batchSize: Int,
 ) {
   suspend fun getUsersPage(skipToken: String?): UserResponse {
     return webClient
       .get()
       .uri(
         "/v1.0/users/?\$select=givenName,surname,jobTitle,mail,userPrincipalName&\$top=$batchSize" +
-          (skipToken?.let { "&\$skiptoken=$skipToken" } ?: "")
+          (skipToken?.let { "&\$skiptoken=$skipToken" } ?: ""),
       )
       .httpRequest {
         val reactorRequest: HttpClientRequest = it.getNativeRequest()

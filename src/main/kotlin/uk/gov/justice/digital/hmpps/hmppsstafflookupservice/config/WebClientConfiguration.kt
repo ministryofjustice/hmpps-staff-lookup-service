@@ -31,7 +31,7 @@ class WebClientConfiguration(
   @Bean
   fun authorizedClientManager(
     clientRegistrationRepository: ReactiveClientRegistrationRepository,
-    oAuth2AuthorizedClientService: ReactiveOAuth2AuthorizedClientService
+    oAuth2AuthorizedClientService: ReactiveOAuth2AuthorizedClientService,
   ): ReactiveOAuth2AuthorizedClientManager? {
     val authorizedClientProvider = ReactiveOAuth2AuthorizedClientProviderBuilder.builder().clientCredentials().build()
     val authorizedClientManager =

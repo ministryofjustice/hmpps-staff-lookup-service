@@ -20,12 +20,12 @@ class OpenApiConfiguration(buildProperties: BuildProperties) {
         Server().url("https://hmpps-staff-lookup-service-preprod.hmpps.service.justice.gov.uk").description("PreProd"),
         Server().url("https://hmpps-staff-lookup-service.hmpps.service.justice.gov.uk").description("Prod"),
         Server().url("http://localhost:8080").description("Local"),
-      )
+      ),
     )
     .info(
       Info().title("HMPPS Staff Lookup API")
         .version(version)
         .description("HMPPS Staff")
-        .contact(Contact().name("HMPPS Digital Studio").email("feedback@digital.justice.gov.uk"))
+        .contact(Contact().name("HMPPS Digital Studio").email("feedback@digital.justice.gov.uk")),
     )
 }

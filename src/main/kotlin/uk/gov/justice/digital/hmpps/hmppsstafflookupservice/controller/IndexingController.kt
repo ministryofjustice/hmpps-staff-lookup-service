@@ -13,14 +13,14 @@ import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service.IndexingServ
 @RestController
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 class IndexingController(
-  private val indexingService: IndexingService
+  private val indexingService: IndexingService,
 ) {
 
   @Operation(summary = "Re-index data from Microsoft Graph")
   @ApiResponses(
     value = [
-      ApiResponse(responseCode = "200", description = "OK")
-    ]
+      ApiResponse(responseCode = "200", description = "OK"),
+    ],
   )
   @PostMapping("/admin/refresh-staffs")
   suspend fun fullReindex(@RequestParam(defaultValue = "true") checkBuildRequired: Boolean) {

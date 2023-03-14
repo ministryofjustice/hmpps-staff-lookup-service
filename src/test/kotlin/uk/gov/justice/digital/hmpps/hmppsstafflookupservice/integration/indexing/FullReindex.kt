@@ -80,7 +80,7 @@ class FullReindex : IntegrationTestBase() {
   private fun doFullReindex() {
     runBlocking {
       buildStatusRepository.save(
-        BuildStatus(SINGLE_ITEM_ID, null, null)
+        BuildStatus(SINGLE_ITEM_ID, null, null),
       )
     }
     webTestClient.post()
