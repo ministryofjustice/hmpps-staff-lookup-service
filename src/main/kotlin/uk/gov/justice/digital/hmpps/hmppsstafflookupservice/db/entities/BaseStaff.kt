@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id
 open class BaseStaff(
   @Id open val id: Long? = null,
   open val firstName: String,
-  open val lastName: String,
+  open val lastName: String? = null,
   open val jobTitle: String? = null,
   open val email: String
 )
