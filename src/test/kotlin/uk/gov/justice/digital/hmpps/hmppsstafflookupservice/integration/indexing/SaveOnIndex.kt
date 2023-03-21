@@ -14,6 +14,7 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must save into staff temp table`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
+      "Def, Abc",
       "Abc",
       "Def",
       "SPO",
@@ -34,6 +35,7 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must fallback on user principal name when mail doesn't exist`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
+      "Def, Abc",
       "Abc",
       "Def",
       "SPO",
@@ -50,6 +52,7 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must not store when no name`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
+      "Def, Abc",
       "Abc",
       "Def",
       "SPO",
@@ -57,6 +60,7 @@ class SaveOnIndex : IntegrationTestBase() {
       "a.user@staff.com",
     )
     val noNameUser = MicrosoftADUser(
+      null,
       null,
       null,
       "SPO",
@@ -73,6 +77,7 @@ class SaveOnIndex : IntegrationTestBase() {
   fun `must store when no surname`(): Unit = runBlocking {
     val noSurnameUser = MicrosoftADUser(
       "sharedmailbox",
+      "sharedmailbox",
       null,
       "SPO",
       "sharedmailbox@staff.com",
@@ -85,8 +90,26 @@ class SaveOnIndex : IntegrationTestBase() {
   }
 
   @Test
+  fun `must fallback to display name when no given name`() = runBlocking {
+    val onlyDisplayName = MicrosoftADUser(
+      "sharedmailbox.display.name",
+      null,
+      null,
+      "SPO",
+      "sharedmailbox@staff.com",
+      "sharedmailbox@staff.com",
+    )
+    singlePageGraphResponse(listOf(onlyDisplayName))
+
+    val staffTemp = refreshStaffReturnFirstSaved()
+    Assertions.assertEquals(onlyDisplayName.mail, staffTemp.email)
+    Assertions.assertEquals(onlyDisplayName.displayName, staffTemp.firstName)
+  }
+
+  @Test
   fun `must store email in lower case`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
+      "Def, Abc",
       "Abc",
       "Def",
       "SPO",
@@ -103,6 +126,7 @@ class SaveOnIndex : IntegrationTestBase() {
   @Test
   fun `must not store when email ends in different domain`(): Unit = runBlocking {
     val microsoftADUser = MicrosoftADUser(
+      "Def, Abc",
       "Abc",
       "Def",
       "SPO",
@@ -110,6 +134,7 @@ class SaveOnIndex : IntegrationTestBase() {
       "a.user@staff.com",
     )
     val differentDomain = MicrosoftADUser(
+      "Def, Abc",
       "Abc",
       "Def",
       "SPO",
