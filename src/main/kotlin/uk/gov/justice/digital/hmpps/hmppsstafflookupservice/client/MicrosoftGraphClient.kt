@@ -15,6 +15,7 @@ data class UserResponse(
 )
 
 data class MicrosoftADUser(
+  val displayName: String?,
   val givenName: String?,
   val surname: String?,
   val jobTitle: String?,
@@ -22,6 +23,8 @@ data class MicrosoftADUser(
   val userPrincipalName: String,
 ) {
   fun getEmail() = (mail ?: userPrincipalName).lowercase()
+
+  fun getFirstName() = givenName ?: displayName
 }
 
 @Service
@@ -33,7 +36,7 @@ class MicrosoftGraphClient(
     return webClient
       .get()
       .uri(
-        "/v1.0/users/?\$select=givenName,surname,jobTitle,mail,userPrincipalName&\$top=$batchSize" +
+        "/v1.0/users/?\$select=displayName,givenName,surname,jobTitle,mail,userPrincipalName&\$top=$batchSize" +
           (skipToken?.let { "&\$skiptoken=$skipToken" } ?: ""),
       )
       .httpRequest {

@@ -82,9 +82,9 @@ abstract class IntegrationTestBase {
 
   fun singlePageGraphResponse(
     usersResponse: List<MicrosoftADUser> = listOf(
-      MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
-      MicrosoftADUser("Ghi", "Jkl", null, null, "ABCDE"),
-      MicrosoftADUser("No Surname", null, null, null, "ABCDE"),
+      MicrosoftADUser("Def, Abc", "Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
+      MicrosoftADUser("Ghi, Jkl", "Ghi", "Jkl", null, null, "ABCDE"),
+      MicrosoftADUser("No Surname", "No Surname", null, null, null, "ABCDE"),
     ),
   ) {
     val response = response().withContentType(APPLICATION_JSON)
@@ -97,14 +97,14 @@ abstract class IntegrationTestBase {
     val skipTokenToSecondPage = "ASKIPTOKEN"
     val firstResponseNextLink = "https://graph.microsoft.com/v1.0/users/?\$select=givenName%2csurname%2cjobTitle%2cmail%2cuserPrincipalName&\$top=100&\$skiptoken=$skipTokenToSecondPage"
     val firstResponseUsers = listOf(
-      MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
-      MicrosoftADUser(null, null, null, null, "b.user@staff.com"),
+      MicrosoftADUser("Def, Abc", "Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
+      MicrosoftADUser(null, null, null, null, null, "b.user@staff.com"),
     )
     val firstResponse = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(firstResponseNextLink, firstResponseUsers)))
 
     val secondResponseUsers = listOf(
-      MicrosoftADUser("Mno", "Pqr", null, null, "c.user@staff.com"),
+      MicrosoftADUser("Pqr, Mno", "Mno", "Pqr", null, null, "c.user@staff.com"),
     )
     val secondResponse = response().withContentType(APPLICATION_JSON)
       .withBody(objectMapper.writeValueAsString(UserResponse(null, secondResponseUsers)))
@@ -122,7 +122,7 @@ abstract class IntegrationTestBase {
 
   fun erroredGraphResponseWithSuccessOnRetry() {
     val usersResponse = listOf(
-      MicrosoftADUser("Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
+      MicrosoftADUser("Def, Abc", "Abc", "Def", "SPO", "a.user@staff.com", "a.user@staff.com"),
     )
     val errorResponse = response().withStatusCode(500)
     val successfulResponse = response().withContentType(APPLICATION_JSON)

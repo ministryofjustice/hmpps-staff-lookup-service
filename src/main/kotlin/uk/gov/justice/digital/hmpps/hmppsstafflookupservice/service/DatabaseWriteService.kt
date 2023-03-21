@@ -14,8 +14,8 @@ class DatabaseWriteService(private val staffTempRepository: StaffTempRepository,
   @Transactional
   suspend fun writeData(data: List<MicrosoftADUser>) {
     val staffToSave = data.filter {
-      it.givenName != null && it.getEmail().endsWith(emailDomain)
-    }.map { StaffTemp(firstName = it.givenName!!, lastName = it.surname, jobTitle = it.jobTitle, email = it.getEmail()) }
+      it.getFirstName() != null && it.getEmail().endsWith(emailDomain)
+    }.map { StaffTemp(firstName = it.getFirstName()!!, lastName = it.surname, jobTitle = it.jobTitle, email = it.getEmail()) }
     staffTempRepository.saveAll(staffToSave).collect()
   }
 }
