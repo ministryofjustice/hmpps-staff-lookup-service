@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: refresh-cronjob
 spec:
-  schedule: "0 */1 * * *"
+  schedule: "{{ .Values.refresh_cronjob_schedule }}"
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 5
   startingDeadlineSeconds: 600

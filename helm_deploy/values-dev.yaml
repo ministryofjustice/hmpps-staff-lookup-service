@@ -1,6 +1,8 @@
 ---
 # Per environment values which override defaults in hmpps-staff-lookup-service/values.yaml
 
+refresh_cronjob_schedule: "15 6-21/1 * * 1-5"
+
 generic-service:
   replicaCount: 2
 
