@@ -28,7 +28,7 @@ dependencies {
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.0.1.RELEASE")
   runtimeOnly("org.postgresql:postgresql:42.6.0")
 
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.0")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
 
   testImplementation("io.jsonwebtoken:jjwt-impl:0.11.5")
   testImplementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
