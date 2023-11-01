@@ -1,6 +1,6 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "5.5.0"
-  kotlin("plugin.spring") version "1.9.10"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "5.8.0"
+  kotlin("plugin.spring") version "1.9.20"
 }
 
 configurations {
@@ -30,8 +30,8 @@ dependencies {
 
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
-  testImplementation("io.jsonwebtoken:jjwt-impl:0.12.2")
-  testImplementation("io.jsonwebtoken:jjwt-jackson:0.12.2")
+  testImplementation("io.jsonwebtoken:jjwt-impl:0.12.3")
+  testImplementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
 
   testImplementation("org.awaitility:awaitility-kotlin:4.2.0")
   testImplementation("org.mock-server:mockserver-netty:5.15.0")
