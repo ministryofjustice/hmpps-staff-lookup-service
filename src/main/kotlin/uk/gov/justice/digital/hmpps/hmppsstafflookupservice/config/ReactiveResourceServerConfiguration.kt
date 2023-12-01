@@ -25,7 +25,10 @@ class ReactiveResourceServerConfiguration {
         ).permitAll()
           .anyExchange().authenticated()
       }
-      .oauth2ResourceServer { it.jwt().jwtAuthenticationConverter(ReactiveAuthAwareTokenConverter()) }
-      .build()
+      .oauth2ResourceServer {
+        it.jwt { jwtCustomizer ->
+          jwtCustomizer.jwtAuthenticationConverter(ReactiveAuthAwareTokenConverter())
+        }
+      }.build()
   }
 }
