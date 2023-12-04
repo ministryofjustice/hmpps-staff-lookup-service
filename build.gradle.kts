@@ -19,7 +19,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.3")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
 
   implementation("io.opentelemetry:opentelemetry-api:1.32.0")
 
