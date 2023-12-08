@@ -15,7 +15,7 @@ generic-service:
     annotations:
       nginx.ingress.kubernetes.io/configuration-snippet: |
         server_tokens off;
-        location /admin/** {
+        location /admin/ {
           deny all;
           return 401;
         }
