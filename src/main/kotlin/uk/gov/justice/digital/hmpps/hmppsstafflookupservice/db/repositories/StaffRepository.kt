@@ -5,5 +5,5 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.entities.Staff
 
 interface StaffRepository : CoroutineCrudRepository<Staff, Long> {
-  suspend fun findFirst20ByEmailLikeOrderByEmailAsc(email: String): Flow<Staff>
+  suspend fun findFirst20ByEmailLikeIgnoreCaseOrderByEmailAsc(email: String): Flow<Staff>
 }
