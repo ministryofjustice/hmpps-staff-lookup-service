@@ -11,5 +11,6 @@ generic-service:
     HMPPS_AUTH_ENDPOINT_URL: https://sign-in.hmpps.service.justice.gov.uk/auth
 
 generic-prometheus-alerts:
+  alertSeverity: hmpps-staff-prod-alerts
   ingress5xxErrorWindowMinutes: 4
 
