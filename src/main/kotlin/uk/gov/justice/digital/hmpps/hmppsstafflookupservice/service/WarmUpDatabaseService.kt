@@ -11,7 +11,7 @@ class WarmUpDatabaseService(private val staffRepository: StaffRepository) {
     .toList()
   suspend fun warmUpStaff() {
     for (c in alphabet) {
-      staffRepository.findFirst20ByEmailLikeIgnoreCaseOrderByEmailAsc(c)
+      staffRepository.findFirst20ByEmailLikeOrderByEmailAsc(c)
     }
   }
 }

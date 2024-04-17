@@ -23,7 +23,7 @@ class WarmUpDatabaseServiceTests : IntegrationTestBase() {
   fun `must query database with all lowercase alphabet characters`(): Unit = runBlocking {
     warmUpDatabaseService.warmUpStaff()
     for (character in expectedCharacters) {
-      Mockito.verify(staffRepository).findFirst20ByEmailLikeIgnoreCaseOrderByEmailAsc(character)
+      Mockito.verify(staffRepository).findFirst20ByEmailLikeOrderByEmailAsc(character)
     }
   }
 }

@@ -9,7 +9,8 @@ import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.Staf
 @Service
 class SearchStaffService(private val staffRepository: StaffRepository) {
   suspend fun searchStaff(email: String): Flow<StaffDetails> {
-    return staffRepository.findFirst20ByEmailLikeIgnoreCaseOrderByEmailAsc("%$email%@%")
+    val lowercaseEmail = email.lowercase()
+    return staffRepository.findFirst20ByEmailLikeOrderByEmailAsc("%$lowercaseEmail%@%")
       .map { staffEntity -> StaffDetails(staffEntity.firstName, staffEntity.lastName, staffEntity.email, staffEntity.jobTitle) }
   }
 }
