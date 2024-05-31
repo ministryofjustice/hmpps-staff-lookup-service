@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -24,6 +25,7 @@ class SearchController(
       ApiResponse(responseCode = "200", description = "OK"),
     ],
   )
+  @PreAuthorize("hasRole('ROLE_MANAGE_A_WORKFORCE_ALLOCATE') or hasRole('ROLE_WORKLOAD_READ')")
   @GetMapping("/staff/search")
   suspend fun searchStaff(@RequestParam(required = true) email: String): Flow<StaffDetails> = searchStaffService.searchStaff(email)
 }
