@@ -30,6 +30,16 @@ class SearchStaffByEmail : IntegrationTestBase() {
   }
 
   @Test
+  fun `must fail if invalid role`(): Unit = runBlocking {
+    webTestClient.get()
+      .uri("/staff/search?email=sm")
+      .headers(setInvalidAuthorisation())
+      .exchange()
+      .expectStatus()
+      .isForbidden
+  }
+
+  @Test
   fun `must favour username over domain name`(): Unit = runBlocking {
     staffRepository.save(Staff(firstName = "Andrew", lastName = "Smith", jobTitle = "Probation Practitioner", email = "andrew.smith@staff.com"))
 
