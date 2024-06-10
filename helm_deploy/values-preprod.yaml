@@ -6,6 +6,13 @@ refresh_cronjob_schedule: "15 8-17/1 * * 1-5"
 generic-service:
   ingress:
     host: hmpps-staff-lookup-service-preprod.hmpps.service.justice.gov.uk
+    annotations:
+      nginx.ingress.kubernetes.io/server-snippet: |
+        server_tokens off;
+        location /admin/ {
+          deny all;
+          return 401;
+        }
 
   env:
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.dev.json

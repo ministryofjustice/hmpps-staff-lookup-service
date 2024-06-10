@@ -6,6 +6,13 @@ refresh_cronjob_schedule: "0 */1 * * *"
 generic-service:
   ingress:
     host: hmpps-staff-lookup-service.hmpps.service.justice.gov.uk
+    annotations:
+      nginx.ingress.kubernetes.io/server-snippet: |
+        server_tokens off;
+        location /admin/ {
+          deny all;
+          return 401;
+        }
 
   env:
     HMPPS_AUTH_ENDPOINT_URL: https://sign-in.hmpps.service.justice.gov.uk/auth
