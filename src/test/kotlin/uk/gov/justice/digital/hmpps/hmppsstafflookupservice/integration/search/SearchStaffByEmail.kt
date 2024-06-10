@@ -30,13 +30,12 @@ class SearchStaffByEmail : IntegrationTestBase() {
   }
 
   @Test
-  fun `must fail if invalid role`(): Unit = runBlocking {
+  fun `must fail if not authorized`(): Unit = runBlocking {
     webTestClient.get()
       .uri("/staff/search?email=sm")
-      .headers(setInvalidAuthorisation())
       .exchange()
       .expectStatus()
-      .isForbidden
+      .isUnauthorized
   }
 
   @Test

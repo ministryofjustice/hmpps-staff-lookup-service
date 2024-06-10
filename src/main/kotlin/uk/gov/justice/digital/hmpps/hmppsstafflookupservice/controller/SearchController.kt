@@ -25,7 +25,7 @@ class SearchController(
       ApiResponse(responseCode = "200", description = "OK"),
     ],
   )
-  @PreAuthorize("hasAnyRole('ROLE_MANAGE_A_WORKFORCE_ALLOCATE', 'ROLE_WORKLOAD_READ')")
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/staff/search")
   suspend fun searchStaff(@RequestParam(required = true) email: String): Flow<StaffDetails> = searchStaffService.searchStaff(email)
 }
