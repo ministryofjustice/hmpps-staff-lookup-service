@@ -76,13 +76,7 @@ abstract class IntegrationTestBase {
 
   internal fun setAuthorisation(
     user: String = "ADMIN",
-    roles: List<String> = listOf("ROLE_MANAGE_A_WORKFORCE_ALLOCATE"),
-    scopes: List<String> = listOf(),
-  ): (HttpHeaders) -> Unit = jwtAuthHelper.setAuthorisation(user, roles, scopes)
-
-  internal fun setInvalidAuthorisation(
-    user: String = "ADMIN",
-    roles: List<String> = listOf("ANY_ROLE"),
+    roles: List<String> = listOf(),
     scopes: List<String> = listOf(),
   ): (HttpHeaders) -> Unit = jwtAuthHelper.setAuthorisation(user, roles, scopes)
 
