@@ -19,9 +19,9 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.8.1")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.5.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0")
 
-  implementation("io.opentelemetry:opentelemetry-api:1.39.0")
+  implementation("io.opentelemetry:opentelemetry-api:1.40.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.flywaydb:flyway-core")
@@ -30,8 +30,8 @@ dependencies {
 
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
 
-  testImplementation("io.jsonwebtoken:jjwt-impl:0.12.5")
-  testImplementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
+  testImplementation("io.jsonwebtoken:jjwt-impl:0.12.6")
+  testImplementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
   testImplementation("org.awaitility:awaitility-kotlin:4.2.1")
   testImplementation("org.mock-server:mockserver-netty:5.15.0")
