@@ -25,6 +25,7 @@ dependencies {
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.flywaydb:flyway-core")
+  implementation("org.postgresql:postgresql:42.7.4")
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.0.5.RELEASE")
   runtimeOnly("org.postgresql:postgresql:42.7.4")
 
