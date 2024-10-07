@@ -77,6 +77,46 @@ class SearchStaffByEmail : IntegrationTestBase() {
   }
 
   @Test
+  fun `must match full email address`(): Unit = runBlocking {
+    staffRepository.save(Staff(firstName = "Andrew", lastName = "Smith", jobTitle = "Probation Practitioner", email = "andrew.smith@staff.com"))
+
+    val usernameStartsWithDomain = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@staff.com"))
+    val otherUserName = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@oldstaff.com"))
+
+    webTestClient.get()
+      .uri("/staff/search?email=Stacie.smith@stAff.co")
+      .headers(setAuthorisation())
+      .exchange()
+      .expectStatus()
+      .isOk
+      .expectBody()
+      .jsonPath("$.length()").isEqualTo(1)
+      .jsonPath("$.[0].firstName").isEqualTo(usernameStartsWithDomain.firstName)
+      .jsonPath("$.[0].lastName").isEqualTo(usernameStartsWithDomain.lastName)
+      .jsonPath("$.[0].jobTitle").isEqualTo(usernameStartsWithDomain.jobTitle)
+  }
+
+  @Test
+  fun `must match partial email address with @`(): Unit = runBlocking {
+    staffRepository.save(Staff(firstName = "Andrew", lastName = "Smith", jobTitle = "Probation Practitioner", email = "andrew.smith@staff.com"))
+
+    val usernameStartsWithDomain = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@staff.com"))
+    val otherUserName = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@oldstaff.com"))
+
+    webTestClient.get()
+      .uri("/staff/search?email=Stacie.smith@stAff")
+      .headers(setAuthorisation())
+      .exchange()
+      .expectStatus()
+      .isOk
+      .expectBody()
+      .jsonPath("$.length()").isEqualTo(1)
+      .jsonPath("$.[0].firstName").isEqualTo(usernameStartsWithDomain.firstName)
+      .jsonPath("$.[0].lastName").isEqualTo(usernameStartsWithDomain.lastName)
+      .jsonPath("$.[0].jobTitle").isEqualTo(usernameStartsWithDomain.jobTitle)
+  }
+
+  @Test
   fun `must return bad request when no email supplied`(): Unit = runBlocking {
     webTestClient.get()
       .uri("/staff/search")
