@@ -104,7 +104,7 @@ class SearchStaffByEmail : IntegrationTestBase() {
     val otherUserName = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@oldstaff.com"))
 
     webTestClient.get()
-      .uri("/staff/search?email=Stacie.smith@stAff")
+      .uri("/staff/search?email=acie.smith@stAff")
       .headers(setAuthorisation())
       .exchange()
       .expectStatus()
