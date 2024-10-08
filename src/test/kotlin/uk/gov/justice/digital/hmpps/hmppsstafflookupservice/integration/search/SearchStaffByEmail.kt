@@ -39,13 +39,13 @@ class SearchStaffByEmail : IntegrationTestBase() {
   }
 
   @Test
-  fun `must favour username over domain name`(): Unit = runBlocking {
+  fun `must accept lower and upper case query`(): Unit = runBlocking {
     staffRepository.save(Staff(firstName = "Andrew", lastName = "Smith", jobTitle = "Probation Practitioner", email = "andrew.smith@staff.com"))
 
     val usernameStartsWithDomain = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@staff.com"))
 
     webTestClient.get()
-      .uri("/staff/search?email=sta")
+      .uri("/staff/search?email=StAc")
       .headers(setAuthorisation())
       .exchange()
       .expectStatus()
@@ -58,13 +58,34 @@ class SearchStaffByEmail : IntegrationTestBase() {
   }
 
   @Test
-  fun `must accept lower and upper case query`(): Unit = runBlocking {
+  fun `must match full email address`(): Unit = runBlocking {
     staffRepository.save(Staff(firstName = "Andrew", lastName = "Smith", jobTitle = "Probation Practitioner", email = "andrew.smith@staff.com"))
 
     val usernameStartsWithDomain = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@staff.com"))
+    val otherUserName = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@oldstaff.com"))
 
     webTestClient.get()
-      .uri("/staff/search?email=StA")
+      .uri("/staff/search?email=Stacie.smith@stAff.co")
+      .headers(setAuthorisation())
+      .exchange()
+      .expectStatus()
+      .isOk
+      .expectBody()
+      .jsonPath("$.length()").isEqualTo(1)
+      .jsonPath("$.[0].firstName").isEqualTo(usernameStartsWithDomain.firstName)
+      .jsonPath("$.[0].lastName").isEqualTo(usernameStartsWithDomain.lastName)
+      .jsonPath("$.[0].jobTitle").isEqualTo(usernameStartsWithDomain.jobTitle)
+  }
+
+  @Test
+  fun `must match partial email address with @`(): Unit = runBlocking {
+    staffRepository.save(Staff(firstName = "Andrew", lastName = "Smith", jobTitle = "Probation Practitioner", email = "andrew.smith@staff.com"))
+
+    val usernameStartsWithDomain = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@staff.com"))
+    val otherUserName = staffRepository.save(Staff(firstName = "Stacie", lastName = "Smith", jobTitle = "Probation Practitioner", email = "stacie.smith@oldstaff.com"))
+
+    webTestClient.get()
+      .uri("/staff/search?email=acie.smith@stAff")
       .headers(setAuthorisation())
       .exchange()
       .expectStatus()
