@@ -63,17 +63,15 @@ class HmppsStaffLookupServiceExceptionHandler {
   }
 
   @ExceptionHandler(AccessDeniedException::class)
-  fun handleAccessDeniedException(e: AccessDeniedException): ResponseEntity<ErrorResponse?>? {
-    return ResponseEntity
-      .status(HttpStatus.FORBIDDEN)
-      .body(
-        ErrorResponse(
-          status = HttpStatus.FORBIDDEN,
-          userMessage = "Access is denied",
-          developerMessage = e.message,
-        ),
-      )
-  }
+  fun handleAccessDeniedException(e: AccessDeniedException): ResponseEntity<ErrorResponse?>? = ResponseEntity
+    .status(HttpStatus.FORBIDDEN)
+    .body(
+      ErrorResponse(
+        status = HttpStatus.FORBIDDEN,
+        userMessage = "Access is denied",
+        developerMessage = e.message,
+      ),
+    )
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java)

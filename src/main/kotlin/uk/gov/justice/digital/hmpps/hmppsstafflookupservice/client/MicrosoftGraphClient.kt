@@ -32,20 +32,18 @@ class MicrosoftGraphClient(
   @Qualifier("microsoftGraphApiWebClient") private val webClient: WebClient,
   @Value("\${microsoft.graph.batch-size:100}") private val batchSize: Int,
 ) {
-  suspend fun getUsersPage(skipToken: String?): UserResponse {
-    return webClient
-      .get()
-      .uri(
-        "/v1.0/users/?\$select=displayName,givenName,surname,jobTitle,mail,userPrincipalName&\$top=$batchSize" +
-          (skipToken?.let { "&\$skiptoken=$skipToken" } ?: ""),
-      )
-      .httpRequest {
-        val reactorRequest: HttpClientRequest = it.getNativeRequest()
-        reactorRequest.responseTimeout(Duration.ofSeconds(10))
-      }
-      .retrieve()
-      .bodyToMono(UserResponse::class.java)
-      .retry(3)
-      .awaitSingle()
-  }
+  suspend fun getUsersPage(skipToken: String?): UserResponse = webClient
+    .get()
+    .uri(
+      "/v1.0/users/?\$select=displayName,givenName,surname,jobTitle,mail,userPrincipalName&\$top=$batchSize" +
+        (skipToken?.let { "&\$skiptoken=$skipToken" } ?: ""),
+    )
+    .httpRequest {
+      val reactorRequest: HttpClientRequest = it.getNativeRequest()
+      reactorRequest.responseTimeout(Duration.ofSeconds(10))
+    }
+    .retrieve()
+    .bodyToMono(UserResponse::class.java)
+    .retry(3)
+    .awaitSingle()
 }

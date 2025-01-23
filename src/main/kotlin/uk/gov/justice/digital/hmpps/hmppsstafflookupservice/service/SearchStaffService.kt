@@ -8,8 +8,6 @@ import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.Staf
 
 @Service
 class SearchStaffService(private val staffRepository: StaffRepository) {
-  suspend fun searchStaff(email: String): Flow<StaffDetails> {
-    return staffRepository.findFirst20ByEmailLikeIgnoreCaseOrderByEmailAsc("%$email%")
-      .map { staffEntity -> StaffDetails(staffEntity.firstName, staffEntity.lastName, staffEntity.email, staffEntity.jobTitle) }
-  }
+  suspend fun searchStaff(email: String): Flow<StaffDetails> = staffRepository.findFirst20ByEmailLikeIgnoreCaseOrderByEmailAsc("%$email%")
+    .map { staffEntity -> StaffDetails(staffEntity.firstName, staffEntity.lastName, staffEntity.email, staffEntity.jobTitle) }
 }

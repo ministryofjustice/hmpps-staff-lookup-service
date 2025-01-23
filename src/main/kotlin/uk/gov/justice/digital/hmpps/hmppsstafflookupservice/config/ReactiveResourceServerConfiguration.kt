@@ -13,22 +13,20 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 class ReactiveResourceServerConfiguration {
 
   @Bean
-  fun springSecurityFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-    return http
-      .csrf { it.disable() } // crst not needed an rest api
-      .authorizeExchange {
-        it.pathMatchers(
-          "/webjars/**", "/favicon.ico", "/csrf",
-          "/health/**", "/info", "/h2-console/**",
-          "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
-          "/admin/**",
-        ).permitAll()
-          .anyExchange().authenticated()
+  fun springSecurityFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain = http
+    .csrf { it.disable() } // crst not needed an rest api
+    .authorizeExchange {
+      it.pathMatchers(
+        "/webjars/**", "/favicon.ico", "/csrf",
+        "/health/**", "/info", "/h2-console/**",
+        "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+        "/admin/**",
+      ).permitAll()
+        .anyExchange().authenticated()
+    }
+    .oauth2ResourceServer {
+      it.jwt { jwtCustomizer ->
+        jwtCustomizer.jwtAuthenticationConverter(ReactiveAuthAwareTokenConverter())
       }
-      .oauth2ResourceServer {
-        it.jwt { jwtCustomizer ->
-          jwtCustomizer.jwtAuthenticationConverter(ReactiveAuthAwareTokenConverter())
-        }
-      }.build()
-  }
+    }.build()
 }
