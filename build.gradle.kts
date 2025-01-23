@@ -50,3 +50,7 @@ tasks {
     }
   }
 }
+
+ktlint {
+  version.set("1.5.0")
+}
