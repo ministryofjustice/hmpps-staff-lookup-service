@@ -1,6 +1,6 @@
 plugins {
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.1.2"
-  kotlin("plugin.spring") version "2.0.21"
+  kotlin("plugin.spring") version "2.1.10"
 }
 
 configurations {
@@ -16,21 +16,21 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.9.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.1")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.4")
 
-  implementation("io.opentelemetry:opentelemetry-api:1.44.1")
+  implementation("io.opentelemetry:opentelemetry-api:1.46.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.flywaydb:flyway-core")
-  implementation("org.postgresql:postgresql:42.7.4")
+  implementation("org.postgresql:postgresql:42.7.5")
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
-  runtimeOnly("org.postgresql:postgresql:42.7.4")
-  runtimeOnly("org.flywaydb:flyway-database-postgresql:10.21.0")
+  runtimeOnly("org.postgresql:postgresql:42.7.5")
+  runtimeOnly("org.flywaydb:flyway-database-postgresql:10.22.0")
 
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
 
   testImplementation("io.jsonwebtoken:jjwt-impl:0.12.6")
   testImplementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
