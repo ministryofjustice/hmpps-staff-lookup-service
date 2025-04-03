@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.hmppsstafflookupservice.controller
 
+import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -22,6 +23,7 @@ class IndexingController(
       ApiResponse(responseCode = "200", description = "OK"),
     ],
   )
+  @Hidden
   @PostMapping("/admin/refresh-staffs")
   suspend fun fullReindex(@RequestParam(defaultValue = "true") checkBuildRequired: Boolean) {
     indexingService.indexAll(checkBuildRequired)
