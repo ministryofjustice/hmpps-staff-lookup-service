@@ -28,7 +28,7 @@ dependencies {
   implementation("org.postgresql:postgresql:42.7.5")
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
   runtimeOnly("org.postgresql:postgresql:42.7.5")
-  runtimeOnly("org.flywaydb:flyway-database-postgresql:10.22.0")
+  runtimeOnly("org.flywaydb:flyway-database-postgresql:11.6.0")
 
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
 
