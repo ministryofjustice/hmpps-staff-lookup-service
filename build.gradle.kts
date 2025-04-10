@@ -16,8 +16,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.1")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
 
   implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.6")
 
@@ -28,9 +28,9 @@ dependencies {
   implementation("org.postgresql:postgresql:42.7.5")
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
   runtimeOnly("org.postgresql:postgresql:42.7.5")
-  runtimeOnly("org.flywaydb:flyway-database-postgresql:11.6.0")
+  runtimeOnly("org.flywaydb:flyway-database-postgresql:11.7.0")
 
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 
   testImplementation("io.jsonwebtoken:jjwt-impl:0.12.6")
   testImplementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
