@@ -1,8 +1,4 @@
 name: Pipeline [test -> build -> deploy]
-env:
-  SPRING_R2DBC_URL: r2dbc:postgresql://localhost:5432/postgres
-  SPRING_R2DBC_USERNAME: postgres
-  SPRING_R2DBC_PASSWORD: postgres
 on:
   push:
     branches:
@@ -36,6 +32,13 @@ jobs:
     with:
       environment: ${{ matrix.environments }}
   kotlin_validate:
+    env:
+      SPRING_R2DBC_URL: r2dbc:postgresql://localhost:5432/postgres
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
     name: Validate the kotlin
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/gradle_localstack_postgres_verify.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
