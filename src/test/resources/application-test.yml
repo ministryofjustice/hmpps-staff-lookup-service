@@ -24,6 +24,10 @@ api.base.url:
 email:
   domain: '@staff.com'
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
   r2dbc:
     properties:
       sslMode: DISABLE
