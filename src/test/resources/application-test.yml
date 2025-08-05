@@ -26,9 +26,12 @@ email:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: root
+    username: postgres
     password: postgres
   r2dbc:
     properties:
+      url: r2dbc:postgresql://localhost:5432/postgres
+      username: postgres
+      password: postgres
       sslMode: DISABLE
       sslRootCert:
