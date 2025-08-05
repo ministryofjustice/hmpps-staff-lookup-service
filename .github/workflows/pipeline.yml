@@ -39,13 +39,6 @@ jobs:
       postgres-tag: '15'
       postgres-username: 'postgres'
       postgres-password: 'postgres'
-      extra-args: >
-        -Dspring.r2dbc.username=postgres
-        -Dspring.r2dbc.password=postgres
-        -Dspring.r2dbc.url=r2dbc:postgresql://localhost:5432/postgres
-        -Dspring.datasource.username=postgres
-        -Dspring.datasource.password=postgres
-        -Dspring.datasource.url=jdbc:postgresql://localhost:5432/postgres
   build:
     name: Build docker image from hmpps-github-actions
     if: github.ref == 'refs/heads/main'

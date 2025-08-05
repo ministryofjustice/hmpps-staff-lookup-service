@@ -29,9 +29,9 @@ spring:
     username: postgres
     password: postgres
   r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
     properties:
-      url: r2dbc:postgresql://localhost:5432/postgres
-      username: postgres
-      password: postgres
       sslMode: DISABLE
       sslRootCert:
