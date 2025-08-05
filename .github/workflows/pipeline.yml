@@ -1,4 +1,8 @@
 name: Pipeline [test -> build -> deploy]
+env:
+  SPRING_R2DBC_URL: r2dbc:postgresql://localhost:5432/postgres
+  SPRING_R2DBC_USERNAME: postgres
+  SPRING_R2DBC_PASSWORD: postgres
 on:
   push:
     branches:
