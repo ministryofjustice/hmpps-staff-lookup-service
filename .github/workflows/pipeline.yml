@@ -2,7 +2,7 @@ name: Pipeline [test -> build -> deploy]
 on:
   push:
     branches:
-      - 'main'
+      - '**'
   workflow_dispatch:
     inputs:
       additional_docker_tag:
@@ -72,6 +72,7 @@ jobs:
       app_version: '${{ needs.build.outputs.app_version }}'
   deploy_prod:
     name: Deploy to the prod environment
+    if: github.ref == 'refs/heads/main'
     needs:
     - build
     - helm_lint
