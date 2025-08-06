@@ -54,3 +54,7 @@ tasks {
 ktlint {
   version.set("1.5.0")
 }
+
+tasks.test {
+  maxParallelForks = 1
+}

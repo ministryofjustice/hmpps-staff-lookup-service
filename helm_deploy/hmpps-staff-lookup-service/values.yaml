@@ -4,7 +4,7 @@ generic-service:
   replicaCount: 4
 
   image:
-    repository: quay.io/hmpps/hmpps-staff-lookup-service
+    repository: ghcr.io/ministryofjustice/hmpps-staff-lookup-service
     tag: app_version # override at deployment time
     port: 8080
 
