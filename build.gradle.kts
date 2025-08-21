@@ -1,5 +1,6 @@
 plugins {
   id("com.gorylenko.gradle-git-properties") version "2.5.2"
+  id("org.owasp.dependencycheck") version "12.1.3"
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "8.3.6"
   kotlin("plugin.spring") version "2.2.10"
 }
@@ -8,6 +9,10 @@ configurations {
   implementation { exclude(module = "spring-boot-starter-web") }
   implementation { exclude(module = "spring-boot-starter-tomcat") }
   testImplementation { exclude(group = "org.junit.vintage") }
+}
+
+dependencyCheck {
+  nvd.datafeedUrl = "file:///opt/vulnz/cache"
 }
 
 dependencies {
