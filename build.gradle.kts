@@ -1,7 +1,7 @@
 plugins {
   id("com.gorylenko.gradle-git-properties") version "2.5.2"
   id("org.owasp.dependencycheck") version "12.1.3"
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "8.3.6"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "8.3.7"
   kotlin("plugin.spring") version "2.2.10"
 }
 
@@ -25,7 +25,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.10")
+  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.11")
 
   implementation("io.opentelemetry:opentelemetry-api:1.53.0")
 
