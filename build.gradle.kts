@@ -25,16 +25,16 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.12")
+  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.13")
 
-  implementation("io.opentelemetry:opentelemetry-api:1.53.0")
+  implementation("io.opentelemetry:opentelemetry-api:1.54.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.flywaydb:flyway-core")
   implementation("org.postgresql:postgresql:42.7.7")
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
   runtimeOnly("org.postgresql:postgresql:42.7.7")
-  runtimeOnly("org.flywaydb:flyway-database-postgresql:11.11.2")
+  runtimeOnly("org.flywaydb:flyway-database-postgresql:11.12.0")
 
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 
