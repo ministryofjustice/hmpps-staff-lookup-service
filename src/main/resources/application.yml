@@ -12,8 +12,8 @@ spring:
 
   flyway:
     url: "jdbc:postgresql://${database.endpoint:localhost:5432}/${database.name:postgres}"
-    user: "${database.username:postgres}"
-    password: "${database.password:postgres}"
+    user: "${database.username:root}"
+    password: "${database.password:dev}"
     postgresql:
       transactional-lock: false
   jackson:
