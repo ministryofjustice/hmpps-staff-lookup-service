@@ -23,8 +23,8 @@ spring:
 
   r2dbc:
     url: "r2dbc:postgresql://${database.endpoint:localhost:5432}/${database.name:postgres}"
-    username: "${database.username:root}"
-    password: "${database.password:dev}"
+    username: "${database.username:postgres}"
+    password: "${database.password:postgres}"
     pool:
       max-life-time: -1
     properties:
