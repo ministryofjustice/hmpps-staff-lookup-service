@@ -12,8 +12,8 @@ spring:
 
   flyway:
     url: "jdbc:postgresql://${database.endpoint:localhost:5432}/${database.name:postgres}"
-    user: "${database.username:root}"
-    password: "${database.password:dev}"
+    user: "${database.username:postgres}"
+    password: "${database.password:postgres}"
     postgresql:
       transactional-lock: false
   jackson:
@@ -23,8 +23,8 @@ spring:
 
   r2dbc:
     url: "r2dbc:postgresql://${database.endpoint:localhost:5432}/${database.name:postgres}"
-    username: "${database.username:root}"
-    password: "${database.password:dev}"
+    username: "${database.username:postgres}"
+    password: "${database.password:postgres}"
     pool:
       max-life-time: -1
     properties:
