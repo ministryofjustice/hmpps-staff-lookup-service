@@ -27,7 +27,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: posgres
+    password: postgres
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/postgres
     username: postgres
