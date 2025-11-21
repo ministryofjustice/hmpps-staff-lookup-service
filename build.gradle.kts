@@ -1,5 +1,5 @@
 plugins {
-  id("com.gorylenko.gradle-git-properties") version "2.5.3"
+  id("com.gorylenko.gradle-git-properties") version "2.5.4"
   id("org.owasp.dependencycheck") version "12.1.9"
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "9.1.4"
   kotlin("plugin.spring") version "2.2.21"
@@ -30,11 +30,11 @@ dependencies {
   implementation("io.opentelemetry:opentelemetry-api:1.56.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
-  implementation("org.flywaydb:flyway-core:11.17.0")
+  implementation("org.flywaydb:flyway-core:11.17.1")
   implementation("org.postgresql:postgresql:42.7.8")
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.1.1.RELEASE")
   runtimeOnly("org.postgresql:postgresql:42.7.8")
-  runtimeOnly("org.flywaydb:flyway-database-postgresql:11.17.0")
+  runtimeOnly("org.flywaydb:flyway-database-postgresql:11.17.1")
 
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 
