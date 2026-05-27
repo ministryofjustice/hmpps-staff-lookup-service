@@ -42,7 +42,7 @@ dependencies {
   testImplementation("io.jsonwebtoken:jjwt-jackson:0.13.0")
 
   testImplementation("org.awaitility:awaitility-kotlin:4.3.0")
-  testImplementation("org.mock-server:mockserver-netty:5.15.0")
+  testImplementation("org.mock-server:mockserver-netty:6.1.0")
 }
 
 java {
