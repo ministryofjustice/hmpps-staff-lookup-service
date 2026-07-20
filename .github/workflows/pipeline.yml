@@ -39,6 +39,7 @@ jobs:
       postgres-tag: '15'
       postgres-username: 'postgres'
       postgres-password: 'postgres'
+      localstack-tag: 'community-archive'
   build:
     name: Build docker image from hmpps-github-actions
     if: github.ref == 'refs/heads/main'
