@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM eclipse-temurin:21.0.9_10-jdk-jammy AS builder
+FROM --platform=$BUILDPLATFORM eclipse-temurin:21.0.12.1_1-jdk-resolute AS builder
 
 ARG BUILD_NUMBER
 ENV BUILD_NUMBER ${BUILD_NUMBER:-1_0_0}
@@ -7,7 +7,7 @@ WORKDIR /app
 ADD . .
 RUN ./gradlew --no-daemon assemble
 
-FROM eclipse-temurin:21.0.9_10-jre-jammy
+FROM eclipse-temurin:21.0.12.1_1-jre-resolute
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
 ARG BUILD_NUMBER
@@ -22,7 +22,7 @@ ENV TZ=Europe/London
 RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
 
 RUN addgroup --gid 2000 --system appgroup && \
-    adduser --uid 2000 --system appuser --gid 2000
+    adduser --uid 2000 --system appuser --gid 2000 --home /home/appuser
 
 # Install AWS RDS Root cert
 RUN mkdir /home/appuser/.postgresql \
