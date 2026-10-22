@@ -29,10 +29,10 @@ dependencies {
   implementation("io.opentelemetry:opentelemetry-api:1.62.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
-  implementation("org.flywaydb:flyway-core:11.20.3")
+  implementation("org.flywaydb:flyway-core:13.11.1")
   implementation("org.postgresql:postgresql:42.7.14")
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.1.1.RELEASE")
-  runtimeOnly("org.flywaydb:flyway-database-postgresql:11.20.3")
+  runtimeOnly("org.flywaydb:flyway-database-postgresql:13.11.1")
 
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 
