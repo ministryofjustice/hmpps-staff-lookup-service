@@ -23,13 +23,12 @@ dependencies {
 
   implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.15")
 
-  implementation("io.opentelemetry:opentelemetry-api:1.58.0")
+  implementation("io.opentelemetry:opentelemetry-api:1.62.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.flywaydb:flyway-core:11.20.3")
-  implementation("org.postgresql:postgresql:42.7.9")
+  implementation("org.postgresql:postgresql:42.7.14")
   runtimeOnly("org.postgresql:r2dbc-postgresql:1.1.1.RELEASE")
-  runtimeOnly("org.postgresql:postgresql:42.7.9")
   runtimeOnly("org.flywaydb:flyway-database-postgresql:11.20.3")
 
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
@@ -38,7 +37,7 @@ dependencies {
   testImplementation("io.jsonwebtoken:jjwt-jackson:0.13.0")
 
   testImplementation("org.awaitility:awaitility-kotlin:4.3.0")
-  testImplementation("org.mock-server:mockserver-netty:5.15.0")
+  testImplementation("org.mock-server:mockserver-netty-no-dependencies:9.0.0")
 }
 
 java {
