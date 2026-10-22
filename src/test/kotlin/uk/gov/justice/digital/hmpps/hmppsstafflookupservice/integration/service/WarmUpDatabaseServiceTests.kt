@@ -4,14 +4,14 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.StaffRepository
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.service.WarmUpDatabaseService
 
 class WarmUpDatabaseServiceTests : IntegrationTestBase() {
 
-  @MockBean
+  @MockitoBean
   override lateinit var staffRepository: StaffRepository
 
   @Autowired

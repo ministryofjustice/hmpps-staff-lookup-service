@@ -1,10 +1,11 @@
 package uk.gov.justice.digital.hmpps.hmppsstafflookupservice.integration
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.junit.jupiter.MockitoExtension
 import org.mockserver.integration.ClientAndServer
 import org.mockserver.integration.ClientAndServer.startClientAndServer
 import org.mockserver.matchers.MatchType
@@ -18,24 +19,28 @@ import org.mockserver.verify.VerificationTimes
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient
 import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
+import tools.jackson.databind.json.JsonMapper
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.client.MicrosoftADUser
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.client.UserResponse
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.StaffRepository
 import uk.gov.justice.digital.hmpps.hmppsstafflookupservice.db.repositories.StaffTempRepository
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
+@AutoConfigureWebTestClient(timeout = "720000")
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension::class)
 abstract class IntegrationTestBase {
 
   private var microsoftOauthMock: ClientAndServer = startClientAndServer(9090)
   private var microsoftGraphMock: ClientAndServer = startClientAndServer(9091)
 
   @Autowired
-  protected lateinit var objectMapper: ObjectMapper
+  protected lateinit var jsonMapper: JsonMapper
 
   @Autowired
   protected lateinit var jwtAuthHelper: JwtAuthHelper
@@ -70,7 +75,7 @@ abstract class IntegrationTestBase {
   internal fun setupMicrosoftOauth() {
     val tenantFromConfig = "tenant-id"
     val response = response().withContentType(APPLICATION_JSON)
-      .withBody(objectMapper.writeValueAsString(mapOf("access_token" to "ABCDE", "token_type" to "bearer")))
+      .withBody(jsonMapper.writeValueAsString(mapOf("access_token" to "ABCDE", "token_type" to "bearer")))
     microsoftOauthMock.`when`(request().withMethod("POST").withPath("/auth/$tenantFromConfig/oauth2/v2.0/token")).respond(response)
   }
 
@@ -94,7 +99,7 @@ abstract class IntegrationTestBase {
     ),
   ) {
     val response = response().withContentType(APPLICATION_JSON)
-      .withBody(objectMapper.writeValueAsString(UserResponse(null, usersResponse)))
+      .withBody(jsonMapper.writeValueAsString(UserResponse(null, usersResponse)))
 
     microsoftGraphMock.`when`(request().withPath("/v1.0/users/")).respond(response)
   }
@@ -107,13 +112,13 @@ abstract class IntegrationTestBase {
       MicrosoftADUser(null, null, null, null, null, "b.user@staff.com"),
     )
     val firstResponse = response().withContentType(APPLICATION_JSON)
-      .withBody(objectMapper.writeValueAsString(UserResponse(firstResponseNextLink, firstResponseUsers)))
+      .withBody(jsonMapper.writeValueAsString(UserResponse(firstResponseNextLink, firstResponseUsers)))
 
     val secondResponseUsers = listOf(
       MicrosoftADUser("Pqr, Mno", "Mno", "Pqr", null, null, "c.user@staff.com"),
     )
     val secondResponse = response().withContentType(APPLICATION_JSON)
-      .withBody(objectMapper.writeValueAsString(UserResponse(null, secondResponseUsers)))
+      .withBody(jsonMapper.writeValueAsString(UserResponse(null, secondResponseUsers)))
 
     microsoftGraphMock.`when`(
       request().withPath("/v1.0/users/"),
@@ -132,7 +137,7 @@ abstract class IntegrationTestBase {
     )
     val errorResponse = response().withStatusCode(500)
     val successfulResponse = response().withContentType(APPLICATION_JSON)
-      .withBody(objectMapper.writeValueAsString(UserResponse(null, usersResponse)))
+      .withBody(jsonMapper.writeValueAsString(UserResponse(null, usersResponse)))
 
     microsoftGraphMock.`when`(
       request().withPath("/v1.0/users/"),
