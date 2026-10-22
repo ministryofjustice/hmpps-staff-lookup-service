@@ -63,7 +63,7 @@ class HmppsStaffLookupServiceExceptionHandler {
   }
 
   @ExceptionHandler(AccessDeniedException::class)
-  fun handleAccessDeniedException(e: AccessDeniedException): ResponseEntity<ErrorResponse?>? = ResponseEntity
+  fun handleAccessDeniedException(e: AccessDeniedException): ResponseEntity<ErrorResponse> = ResponseEntity
     .status(HttpStatus.FORBIDDEN)
     .body(
       ErrorResponse(
