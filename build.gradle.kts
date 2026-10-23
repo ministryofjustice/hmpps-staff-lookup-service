@@ -1,8 +1,8 @@
 plugins {
-  id("com.gorylenko.gradle-git-properties") version "2.5.4"
-  id("org.owasp.dependencycheck") version "12.2.0"
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.11"
-  kotlin("plugin.spring") version "2.3.0"
+  id("com.gorylenko.gradle-git-properties") version "2.5.7"
+  id("org.owasp.dependencycheck") version "12.2.2"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.13"
+  kotlin("plugin.spring") version "2.4.21"
 }
 
 configurations {
@@ -21,26 +21,26 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.security:spring-security-access")
 
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.11.0")
 
   implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:3.1.1")
 
-  implementation("io.opentelemetry:opentelemetry-api:1.62.0")
+  implementation("io.opentelemetry:opentelemetry-api:1.67.0")
 
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.flywaydb:flyway-core:11.20.3")
   implementation("org.postgresql:postgresql:42.7.14")
-  runtimeOnly("org.postgresql:r2dbc-postgresql:1.1.1.RELEASE")
+  runtimeOnly("org.postgresql:r2dbc-postgresql:1.1.3.RELEASE")
   runtimeOnly("org.flywaydb:flyway-database-postgresql:11.20.3")
 
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 
   testImplementation("io.jsonwebtoken:jjwt-impl:0.13.0")
   testImplementation("io.jsonwebtoken:jjwt-jackson:0.13.0")
 
   testImplementation("org.awaitility:awaitility-kotlin:4.3.0")
-  testImplementation("org.mock-server:mockserver-netty-no-dependencies:9.0.0")
+  testImplementation("org.mock-server:mockserver-netty-no-dependencies:9.1.0")
   testImplementation("org.springframework.boot:spring-boot-webtestclient")
 }
 
