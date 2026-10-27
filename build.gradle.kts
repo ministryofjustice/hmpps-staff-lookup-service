@@ -31,7 +31,7 @@ dependencies {
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.flywaydb:flyway-core:11.20.3")
   implementation("org.postgresql:postgresql:42.7.14")
-  runtimeOnly("org.postgresql:r2dbc-postgresql:1.1.1.RELEASE")
+  runtimeOnly("org.postgresql:r2dbc-postgresql:1.1.3.RELEASE")
   runtimeOnly("org.flywaydb:flyway-database-postgresql:11.20.3")
 
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
@@ -42,6 +42,11 @@ dependencies {
   testImplementation("org.awaitility:awaitility-kotlin:4.3.0")
   testImplementation("org.mock-server:mockserver-netty-no-dependencies:9.0.0")
   testImplementation("org.springframework.boot:spring-boot-webtestclient")
+
+  constraints {
+    runtimeOnly("com.ongres.scram:scram-common:3.4")
+    runtimeOnly("com.ongres.scram:scram-client:3.4")
+  }
 }
 
 java {
